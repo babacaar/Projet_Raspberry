@@ -1,0 +1,401 @@
+/*element_abs_alerte
+{
+	position: absolute;
+	background-color: lightblue;
+    width: 98%;
+	height: 5%;
+	left: 1%;
+	top: 1%;
+	margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+	box-sizing: border-box;
+    z-index: 2;
+}
+
+element_abs_citation
+{
+	position: absolute;
+	background-color: lightgreen;
+    width: 98%;
+	height: 5%;
+	left: 1%;
+	top: 7%;
+	margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+	box-sizing: border-box;
+    z-index: 2;
+}
+element_abs_personnels
+{
+	position: absolute;
+	background-color: lightblue;
+    width: 48%;
+	height: 54%;
+	left: 1%;
+	top: 13%;
+	margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+	box-sizing: border-box;
+    z-index: 2;
+}
+
+element_abs_cal_int
+{
+	position: absolute;
+	background-color: lightgreen;
+    width: 48%;
+	height: 15%;
+	left: 1%;
+	top: 68%;
+	margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+	box-sizing: border-box;
+    z-index: 2;
+}
+
+element_abs_eleves
+{
+	position: absolute;
+	background-color: lightblue;
+    width: 48%;
+	height: 15%;
+	left: 1%;
+	top: 84%;
+	margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+	box-sizing: border-box;
+    z-index: 2;
+}
+
+element_abs_fetes
+{
+	position: absolute;
+	background-color: lightgreen;
+    width: 48%;
+	height: 15%;
+	left: 51%;
+	top: 13%;
+	margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+	box-sizing: border-box;
+    z-index: 2;
+}
+
+element_abs_cal_pub
+{
+	position: absolute;
+	background-color: lightblue;
+    width: 48%;
+	height: 54%;
+	left: 51%;
+	top: 29%;
+	margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+	box-sizing: border-box;
+    z-index: 2;
+}
+
+element_abs_meteo
+{
+	position: absolute;
+	background-color: lightgreen;
+    width: 48%;
+	height: 15%;
+	left: 51%;
+	top: 84%;
+	margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+	box-sizing: border-box;
+    z-index: 2;
+}*/
+
+elementHG
+{
+    position: absolute;
+	background-color: lightblue;
+    width: 96%;
+	height: 88%;
+	left: 10px;
+    top: 10px;
+	margin: auto;
+    overflow: hidden;
+	box-sizing: border-box;
+    z-index: 2;
+}
+elementBG
+{
+    position: absolute;
+    background-color: lightblue;
+    width: 96%;
+	height: 8%;
+	left: 10px;
+    bottom: 10px;
+    z-index: 2;
+}
+
+elementConf
+{	
+	display: block;
+	background-color: lightblue;
+    	width: 100%;
+	height: 50%;
+	padding: auto;
+	border:none;
+	margin-top: 100px;
+	
+}
+/*.generer
+{	
+	display: block;
+	float: right;
+	margin-top:-156.5px;
+	
+	background-color: darkred;
+	width: 25%;
+	height: 100%;
+	font-weight: bold;
+	text-align: center;
+}*/
+.fichier
+{
+	display: inline;
+	font-size: 25px;
+	font-family: Comic Sans MS;
+	font-weight: bold;
+	text-align: center;
+	text-transform: uppercase;
+}
+.//scroll_V_G {
+	top: 100px;
+    position: absolute;
+    box-sizing: border-box;
+    margin-top: 100px;
+}
+.T1
+{
+	table-layout: fixed;
+	width: 100%;
+	border-collapse: collapse;
+	border: 3px solid purple;
+}
+
+.Col_per
+{
+	display: inline;
+	font-size: 24px;
+	font-family: Comic Sans MS;
+	font-weight: bold;
+	padding: 12px 20px;
+	margin: 8px 0;
+	border-radius: 10px;
+	box-sizing: border-box;
+	
+}
+
+.Col_motif
+{
+	display: inline;
+	font-size: 24px;
+	font-family: Comic Sans MS;
+	font-weight: bold;
+	padding: 12px 20px;
+	margin: 8px 0;
+	border-radius: 10px;
+	box-sizing: border-box;
+}
+
+.Col_date
+{
+	display: inline;
+	font-size: 24px;
+	font-family: Comic Sans MS;
+	font-weight: bold;
+	padding: 12px 20px;
+	margin: 8px 0;
+	border-radius: 10px;
+	box-sizing: border-box;
+	
+}
+
+.Col_commentaire
+{
+	display: inline;
+	font-size: 24px;
+	font-family: Comic Sans MS;
+	font-weight: bold;
+	padding: 12px 20px;
+	margin: 8px 0;
+	border-radius: 10px;
+	box-sizing: border-box;
+	
+}
+
+.Critique_DD
+{
+	background-color : ff7d7a;
+	display: inline;
+	font-size: 20px;
+	font-family: Comic Sans MS;
+	font-weight: bold;
+	
+}
+.Critique_RS
+{
+	background-color : ff7d7a;
+	display: inline;
+	font-size: 20px;
+	font-family: Comic Sans MS;
+	font-weight: semi bold;
+	opacity: 0.8;
+	
+}
+.Critique_R
+{
+	background-color : ff7d7a;
+	display: inline;
+	font-size: 20px;
+	font-family: Comic Sans MS;
+	font-weight: bold;
+	
+}
+.Critique_O
+{
+	background-color : fdc58b;
+	display: inline;
+	font-size: 20px;
+	font-family: Comic Sans MS;
+	font-weight: bold;
+}
+.Critique_N
+{
+	background-color : lightgreen;
+	display: inline;
+	font-size: 20px;
+	font-family: Comic Sans MS;
+	font-weight: bold;
+}
+.Normal
+{
+	display: inline;
+	font-size: 15px;
+	font-family: Comic Sans MS;
+	font-weight:none;
+}
+.bg_file
+{
+	Color: Green;
+	font-weight: bold;
+	background-color: lightblue;
+}
+.file
+{
+	color: yellow;
+	font-weight: bold;
+	background-color: blue;
+}
+
+page
+{
+	position: absolute;
+	background-color: black;
+	z-index: 1;
+}
+input[type=text]
+{
+	background-color: lightblue;
+	color: Black;
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	border-radius: 10px;
+	box-sizing: border-box;
+	margin-top: auto;
+}
+input[type=date]
+{
+	background-color: lightblue;
+	color: Black;
+	width: 60%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	border-radius: 10px;
+	cursor: pointer;
+	box-sizing: border-box;
+}
+input[type=submit]
+{
+	padding: 15px 25px;
+	font-size: 24px;
+	text-align: center;
+	cursor: pointer;
+	outline: none;
+	color: #000;
+	background-color: lightblue;
+	border: none;
+	border-radius: 15px;
+	box-shadow: 0 9px #999;
+	margin-left: 10px;
+	margin-top: 8px;
+	text-decoration: none;
+}
+input[type=button]
+{
+			padding: 15px 25px;
+			font-size: 24px;
+			text-align: center;
+			cursor: pointer;
+			outline: none;
+			color: #000;
+			background-color: lightblue;
+			border: none;
+			border-radius: 15px;
+			box-shadow: 0 9px #999;
+			margin-left: 10px;
+			margin-top: 8px;
+			text-decoration: none;
+			}
+select
+{
+	width: 60%;
+	padding: 12px 20px;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+	background-color: lightblue;
+}
+
+.scroll_V_B {
+	top: 10px;
+    position: relative;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+@keyframes clignoter {
+  0%   { opacity:1; }
+  40%   {opacity:0; }
+  100% { opacity:1; }
+}
+
+@keyframes scroll_V_B
+{
+    0% { top: 10px }
+	10% { top: -10% }
+	20% { top: -10% }
+	30% { top: -20% }
+	40% { top: -20% }
+	50% { top: -30% }
+	60% { top: -30% }
+	70% { top: -40% }
+	80% { top: -40% }
+    90% { top: -50% }
+	100% { top: -50% }
+}
