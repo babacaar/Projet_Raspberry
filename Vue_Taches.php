@@ -24,7 +24,7 @@ $pdo = new PDO('mysql:host='.$dbhost.';port='.$dbport.';dbname='.$db.'', $dbuser
 <div class="scroll_V_B">
 <?php 
 $stmt0 = $pdo->prepare("	SELECT * 
-						FROM `ToDoList`
+						FROM `todolist`
 						WHERE TDL_Tache_Achieve='NON'
 						ORDER BY TDL_Priority='Basse',TDL_Priority='Moyenne',TDL_Priority='Haute'
 						LIMIT 30
@@ -33,7 +33,7 @@ $stmt0->bindParam(1,$id);
 $stmt0->execute();
 
 $stmt1 = $pdo->prepare("	SELECT * 
-						FROM `ToDoList`
+						FROM `todolist`
 						WHERE TDL_Tache_Achieve='NON'
 						ORDER BY TDL_Priority='Basse',TDL_Priority='Moyenne',TDL_Priority='Haute'
 						");
