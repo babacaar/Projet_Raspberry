@@ -17,7 +17,9 @@ pipeline {
 
         stage('Sauvegarde de la base de données') {
             steps {
-                sh './DB-backup/backup.sh'  // Exécute le script de sauvegarde
+                // Assurez-vous que le script de sauvegarde est exécutable
+                sh 'chmod +x DB-backup/backup.sh'
+                sh '/DB-backup/backup.sh'  // Exécute le script de sauvegarde
             }
         }
         stage('Archiver les sauvegardes') {
