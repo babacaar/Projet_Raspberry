@@ -18,8 +18,8 @@ pipeline {
         stage('Sauvegarde de la base de données') {
             steps {
                 // Assurez-vous que le script de sauvegarde est exécutable
-                sh 'chmod +x DB-backup/backup.sh'
-                sh '/DB-backup/backup.sh'  // Exécute le script de sauvegarde
+                sh 'chmod +x /root/jenkins/mesBackup/backup.sh'
+                sh '/root/jenkins/mesBackup/backup.sh'  // Exécute le script de sauvegarde
             }
         }
         stage('Archiver les sauvegardes') {
