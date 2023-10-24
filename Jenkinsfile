@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+    GITHUB_USERNAME = credentials('GitHubCredentials').babacaar
+    GITHUB_ACCESS_TOKEN = credentials('GitHubCredentials').Vakrib#84
+}
+
+
     stages {
         stage('Checkout from GitHub') {
             steps {
@@ -23,7 +29,7 @@ pipeline {
         stage('Commit and Push to GitHub') {
             steps {
                 // Copiez la sauvegarde dans le répertoire du référentiel local
-                sh 'cp sauvegarde.sql ./root/jenkins/mesBackup'
+                sh 'cp sauvegarde.sql ./root/jenkins/mesBackup/'
 
                 // Utilisez git pour ajouter, valider et pousser la sauvegarde sur GitHub
                 sh 'git add .'
