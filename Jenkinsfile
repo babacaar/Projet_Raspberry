@@ -1,17 +1,17 @@
 pipeline {
     agent any
 
-    environment {
+ /*   environment {
     GITHUB_USERNAME = credentials('GitHubCredentials').babacaar
     GITHUB_ACCESS_TOKEN = credentials('GitHubCredentials').Vakrib#84
-}
+}*/
 
 
     stages {
         stage('Checkout from GitHub') {
             steps {
                 // Utilisez git pour récupérer le script de sauvegarde depuis GitHub
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/babacaar/Projet_Raspberry.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://babacaar: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@github.com/babacaar/Projet_Raspberry/']]])
             }
         }
 
