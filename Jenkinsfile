@@ -17,7 +17,7 @@ pipeline {
 
         stage('Sauvegarde de la base de données') {
             steps {
-                sh './backup.sh'  // Exécute le script de sauvegarde
+                sh './DB-backup/backup.sh'  // Exécute le script de sauvegarde
             }
         }
         stage('Archiver les sauvegardes') {
