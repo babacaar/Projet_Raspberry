@@ -1,24 +1,34 @@
 <?php 
- 	require_once "controller_config_files.php";
+	//PARAMETRES DATABASE
+ 	$db="Affichage";
+	$dbhost="localhost";
+	$dbport=3306;
+	$dbuser="root";
+	$dbpasswd="22351414";
+
+	//Parametres FTP LPJW
+	$ftp_server = "localhost";
+	$ftp_username = "ftp_Lpjw";
+	$ftp_password = "Passer1234#";
+
 
 	// NAME servira de nom au fichier texte crée
-		$name = "Myfiles";
+	$name = "Myfiles";
 
 
 		//EMPLACEMENT DU DOSSIER 
-
 	$dossier = "Etat";
-	$boolean = "VRAI";          //Permet de checker l'état des raspberry
+	$boolean = "VRAI";
 	if(!file_exists($dossier)) //vérification de l'existence du dossier
 	{
     
-    if(mkdir($dossier))  // Tentative de création du répertoire
-    {
-        echo "Répertoire crée avec succès.";
-    } 
-    else {
-        echo "ERREUR : Le répertoire n'a pas pu être créé.";
-    } 
+		    if(mkdir($dossier))  // Tentative de création du répertoire
+		    {
+		        echo "Répertoire créé avec succès.";
+		    } 
+		    else {
+		        echo "ERREUR : Le répertoire n'a pas pu être créé.";
+		    } 
 	}
 	else {
     echo "Le répertoire existe déjà.";
@@ -35,7 +45,6 @@
                 }
             }
     }
-		//RECUPERATION A PARTIR DE LA BASE DE DONNEE DE LA DERNIERE DATE DE PUSH
 
     $pdo = new PDO('mysql:host='.$dbhost.';port='.$dbport.';dbname='.$db.'', $dbuser, $dbpasswd);
 	$stmt1 = $pdo->prepare("SELECT * 
@@ -51,11 +60,11 @@
 		$link = $row1['Conf_sites'];
 		$id = $row1['Conf_id'];
 		$dateLastModif = $row1['Conf_date'];
-		//$dateLastModifPush = $row1['Push_date'];
 	}
 		echo "Le dernier push a été fait le " .$dateLastModif." ! <br>";
-
 ?>
+
+
 <!DOCTYPE html>
 	<html>
 	<head>
@@ -76,6 +85,6 @@
 			
 	</head>
 	<body>
-		<a href="http://172.17.5.202/configuration.php" class="precedent">&laquo; Précédent</a>
+		<a href="http://172.17.5.202/Configuration.php" class="precedent">&laquo; Précédent</a>
 	</body>
 	</html>

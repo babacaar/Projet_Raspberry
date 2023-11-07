@@ -1,0 +1,69 @@
+<?php
+
+require_once "new1.php";
+
+// Récupérer le nombre de Raspberry Pi et le nombre de groupes depuis la base de données
+$query = "SELECT raspberry_count, group_count FROM conf_raspberry WHERE id = 1";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+$raspberryCount = $result['raspberry_count'];
+$groupCount = $result['group_count'];
+
+// Récupérer les informations des Raspberry Pi depuis la base de données
+$query = "SELECT id, hostname, ip, group_id FROM raspberries";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$raspberries = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Récupérer les informations des groupes depuis la base de données
+$query = "SELECT id, name FROM groups";
+$stmt = $db->prepare($query);
+$stmt->execute();
+$groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Configuration des Raspberry Pi</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h1>Configuration des Raspberry Pi</h1>
+  
+  <form method="post" action="save.php">
+    <?php for ($i = 1; $i <= $raspberryCount; $i++): ?>
+      <h2>Raspberry<?php echo $i; ?></h2>
+      <label for="hostname_<?php echo $i; ?>">Hostname:</label>
+      <input type="text" name="hostname_<?php echo $i; ?>" id="hostname_<?php echo $i; ?>"><br>
+  
+      <label for="ip_<?php echo $i; ?>">IP:</label>
+      <input type="text" name="ip_<?php echo $i; ?>" id="ip_<?php echo $i; ?>"><br>
+  
+      <label for="group_<?php echo $i; ?>">Groupe:</label>
+      <select name="group_<?php echo $i; ?>" id="group_<?php echo $i; ?>">
+        <option value="">Sélectionner un groupe</option>
+        <?php foreach ($groups as $group): ?>
+          <option value="<?php echo $group['id']; ?>"><?php echo $group['name']; ?></option>
+        <?php endforeach; ?>
+      </select><br><br>
+    <?php endfor; ?>
+  
+    <?php for ($i = 1; $i <= $groupCount; $i++): ?>
+      <h2>Groupe <?php echo $i; ?></h2>
+      <label for="group_name_<?php echo $i; ?>">Nom:</label>
+      <input type="text" name="group_name_<?php echo $i; ?>" id="group_name_<?php echo $i; ?>"><br>
+  
+      <label for="group_raspberries_<?php echo $i; ?>">Raspberries:</label>
+      <select name="group_raspberries_<?php echo $i; ?>[]" id="group_raspberries_<?php echo $i; ?>" multiple>
+        <?php foreach ($raspberries as $raspberry): ?>
+          <option value="<?php echo $raspberry['id']; ?>"><?php echo $raspberry['hostname']; ?></option>
+        <?php endforeach; ?>
+      </select><br><br>
+    <?php endfor; ?>
+  
+    <input type="submit" value="Enregistrer">
+  </form>
+</body>
+</html>

@@ -1,7 +1,12 @@
 <?php
   // Vérifie qu'il provient d'un formulaire
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require_once "controller_config_files.php";
+    // Database settings
+	$db="Affichage";
+	$dbhost="localhost";
+	$dbport=3306;
+	$dbuser="root";
+	$dbpasswd="root";
 	
 	$TDL_Name_Tache = $_POST["TDL_Name_Tache"]; 
     $TDL_Priority = $_POST["TDL_Priority"];

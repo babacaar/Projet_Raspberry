@@ -1,4 +1,4 @@
-/*element_abs_alerte
+element_abs_alerte
 {
 	position: absolute;
 	background-color: lightblue;
@@ -27,6 +27,7 @@ element_abs_citation
 	box-sizing: border-box;
     z-index: 2;
 }
+
 element_abs_personnels
 {
 	position: absolute;
@@ -115,14 +116,14 @@ element_abs_meteo
     overflow: hidden;
 	box-sizing: border-box;
     z-index: 2;
-}*/
+}
 
 elementHG
 {
     position: absolute;
 	background-color: lightblue;
-    width: 96%;
-	height: 88%;
+    width: 60%;
+	height: 48%;
 	left: 10px;
     top: 10px;
 	margin: auto;
@@ -130,29 +131,72 @@ elementHG
 	box-sizing: border-box;
     z-index: 2;
 }
+elementHD
+{
+    position: absolute;
+    background-color: lightgreen;
+    width: 38%;
+	height: 48%;
+	right: 10px;
+    top: 10px;
+    z-index: 2;
+}
 elementBG
 {
     position: absolute;
     background-color: lightblue;
-    width: 96%;
-	height: 8%;
+    width: 38%;
+	height: 48%;
 	left: 10px;
     bottom: 10px;
     z-index: 2;
 }
-
-elementConf
+elementBD
+{
+    position: absolute;
+	background-color: lightgreen;
+    width: 60%;
+	height: 48%;
+	right: 10px;
+    bottom: 10px;
+    z-index: 2;
+}
+/*.elementConf
 {	
+	
 	display: block;
 	background-color: lightblue;
-    	width: 100%;
-	height: 50%;
-	padding: auto;
+    width: 100%;
+	height: 50%; /* Permettre à la section de s'agrandir en fonction du contenu */
+	/*padding: 190px 0px;
 	border:none;
-	margin-top: 100px;
-	
+	margin-top: 0px; /* Ajout d'une marge vers le haut */
+ /*   margin-bottom: 20px; /* Ajout d'une marge vers le bas */
+		
+/*}*/
+.elementConf {
+  background-color: lightblue;
+  width: 100%;
+  height: 500px; /* Permettre à la section de s'agrandir en fonction du contenu */
+  padding: 0px 0px;
+  border: 1px solid lightgray;
+  margin-top: 0px; /* Ajout d'une marge vers le haut */
+   margin-bottom: 10px; /* Ajout d'une marge vers le bas */
+    font-family: sans-serif;
+    
 }
-/*.generer
+
+ 
+
+.elementConf p {
+  font-size: 24px;
+  font-weight: regular;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  color: #000;
+}
+
+.generer
 {	
 	display: block;
 	float: right;
@@ -163,14 +207,14 @@ elementConf
 	height: 100%;
 	font-weight: bold;
 	text-align: center;
-}*/
+}
 .fichier
 {
 	display: inline;
 	font-size: 25px;
 	font-family: Comic Sans MS;
 	font-weight: bold;
-	text-align: center;
+	
 	text-transform: uppercase;
 }
 .//scroll_V_G {
@@ -247,21 +291,11 @@ elementConf
 	font-weight: bold;
 	
 }
-.Critique_RS
-{
-	background-color : ff7d7a;
-	display: inline;
-	font-size: 20px;
-	font-family: Comic Sans MS;
-	font-weight: semi bold;
-	opacity: 0.8;
-	
-}
 .Critique_R
 {
 	background-color : ff7d7a;
 	display: inline;
-	font-size: 20px;
+	font-size: 24px;
 	font-family: Comic Sans MS;
 	font-weight: bold;
 	
@@ -270,7 +304,7 @@ elementConf
 {
 	background-color : fdc58b;
 	display: inline;
-	font-size: 20px;
+	font-size: 22px;
 	font-family: Comic Sans MS;
 	font-weight: bold;
 }
@@ -312,12 +346,11 @@ input[type=text]
 {
 	background-color: lightblue;
 	color: Black;
-	width: 100%;
+	width:180%;
 	padding: 12px 20px;
 	margin: 8px 0;
 	border-radius: 10px;
 	box-sizing: border-box;
-	margin-top: auto;
 }
 input[type=date]
 {

@@ -5,7 +5,12 @@
   </head>
   <body>
 <?php
-require_once "controller_config_files.php";
+// Database settings
+	$db="Affichage";
+	$dbhost="172.17.5.202";
+	$dbport=3306;
+	$dbuser="root";
+	$dbpasswd="22351414";
  
 $pdo = new PDO('mysql:host='.$dbhost.';port='.$dbport.';dbname='.$db.'', $dbuser, $dbpasswd);
 //$pdo->exec("SET CHARACTER SET utf8");
@@ -41,7 +46,7 @@ $pdo = new PDO('mysql:host='.$dbhost.';port='.$dbport.';dbname='.$db.'', $dbuser
 		<option value="NON">NON</option>
 	</select><br />
 	<input type="submit" value="Submit" /><br />
-	<input type="button" onclick="window.location.href = 'http://172.17.5.202/Menu.php';" value="Menu" /><br />
+	<input type="button" onclick="window.location.href = 'http://172.17.5.202/menu.php';" value="Menu" /><br />
     </form>
    </body>
 </html>

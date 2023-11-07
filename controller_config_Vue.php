@@ -1,5 +1,9 @@
 <?php 
-	require_once "controller_config_files.php";
+	$db="ost";
+	$dbhost="172.17.5.200";
+	$dbport=3306;
+	$dbuser="wpuser";
+	$dbpasswd="22351414";
 
 
 	// NAME servira de nom au fichier texte créé (le nom du fichier aura le préfixe "SITE_" suivi de l'ID)
