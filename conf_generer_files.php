@@ -1,13 +1,13 @@
 
 
 <?php 
-	
+/*	
 	require_once "controller_config_files.php";
 	
 		//RECUPERATION DES LIENS
     $pdo = new PDO('mysql:host='.$dbhost.';port='.$dbport.';dbname='.$db.'', $dbuser, $dbpasswd);
 	$stmt0 = $pdo->prepare("SELECT * 
-						FROM `configuration`
+						FROM `Configuration`
 						ORDER BY Conf_id DESC
                         LIMIT 1
 						");
@@ -18,7 +18,6 @@
 	{
 		$link = $row0['Conf_sites'];
 		$id = $row0['Conf_id'];
-		//$dateLastModif = $row0['Conf_date'];
 	}
 
 		
@@ -32,19 +31,20 @@
 			xset s off\n
 			xset -dpms\n
 			unclutter -idle 1 -root &\n
+                       /usr/bin/chromium-browser --kiosk http://url_de_votre_page_web
 
 			#/usr/bin/chromium-browser --kiosk --noerrdialogs http://10.49.11.214/captures/capturemm.png http://10.49.11.214/captures/capturemm.png http://10.49.11.214/captures/capturemm.png https://lpjw.fr/ecrans/menu.jpg &\n
 			/usr/bin/chromium-browser --kiosk --noerrdialogs $link &\n
-
+			 mplayer -fullscreen -loop 0 /home/pi/Video/LpjwVideo.mp4
 		while true; do\n
 		   xdotool keydown ctrl+Next; xdotool keyup ctrl+Next;\n
 		   xdotool keydown ctrl+r; xdotool keyup ctrl+r;\n
-		   sleep 50\n
+		   sleep 15\n
 		done\n";
 		
 	$pdo = new PDO('mysql:host='.$dbhost.';port='.$dbport.';dbname='.$db.'', $dbuser, $dbpasswd);
 	$stmt1 = $pdo->prepare("SELECT * 
-						FROM `configuration`
+						FROM `Configuration`
 						ORDER BY Conf_id DESC
                         LIMIT 1
 						");
@@ -61,7 +61,7 @@
 		echo "La dernière génération est faite le " .$dateLastModif." ! <br>";
 
 
-		// ENREGISTREMENT DU FICHIER .sh EN LOCAL
+		// ENREGISTREMENT DU FICHIER EN LOCAL
 	$file = $dir.$name.".sh";
 	
 	$fichier = fopen($file,'w');
@@ -70,7 +70,19 @@
 
 
 		//CHARGEMENT DU FICHIER DANS UN SERVEUR FTP PAR EXEMPLE
-//CONNEXION EN FTP ET TRANSFERT DU FICHIER DANS LE RASPBERRY
+
+	//if(empty($_POST['Conf_sites']) && empty($_POST['Conf_id']))
+/*	{
+		echo "Le chargement a échoué.\n";
+		echo "<br>";
+	}
+*/
+
+	// variable initialization
+
+	
+
+	//$command = 'sudo reboot';	
 	$identifiant_Srv = ftp_connect($ftp_kioskbsif_server) or die("could not connect to $ftp_kioskbsif_server");
 
 	if (@ftp_login($identifiant_Srv, $ftp_kioskbsif_username, $ftp_kioskbsif_password)) 
@@ -84,16 +96,16 @@
 		 	echo "Connexion impossible en tant que $ftp_kioskbsif_username\n";
 		 	echo "<br>";
 		 }
+	
+	//ftp_pasv($identifiant_Srv, true);
 
 		$remote_file = $name;
 		ftp_put($identifiant_Srv, $remote_file,$file, FTP_ASCII);
 		ftp_close($identifiant_Srv);
-//FIN DU TRANSFERT DU FICHIER ET DECONNEXION
 
 
+$connection = ssh2_connect($ssh_kioskbsif_server, $ssh_kioskbsif_port);
 
-//CONNEXION EN SSH AU RASPBERRY ET AFFICHAGE DES LIENS CONTENUS DANS LE FICHER TRANSFERE PAR FTP 
-		$connection = ssh2_connect($ssh_kioskbsif_server, $ssh_kioskbsif_port);
 		ssh2_auth_password($connection, $ssh_kioskbsif_username, $ssh_kioskbsif_password);
 		$stream = ssh2_exec($connection, '/home/pi/test.sh');
 		stream_set_blocking($stream, true);
@@ -102,8 +114,27 @@
 		echo trim($stream_out);
 
 	ssh2_disconnect($connection);
-	unset($connection);
-//DECONNEXION AU SRV RASP
+	unset($connection);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
+
+
+
+	
+/*$identifiant_Srv = ssh2_connect($ssh_kioskbsif_server, $ssh_kioskbsif_port)or die("could not connect to $ssh_kioskbsif_server");
+if  (!ssh2_auth_password( $identifiant_Srv, $ssh_kioskbsif_username, $ssh_kioskbsif_password))  
+{ 
+    echo "Connexion impossible en tant que $ssh_kioskbsif_username\n";
+	echo "<br>";
+} 
+pem
+if  ( !$sftp  =  ssh2_sftp ( $identifiant_Srv) )  { 
+    echo "Impossible de créer une connexion SFTP.\n"; 
+}
+		$remote_file = $name;
+		ftp_put($identifiant_Srv, $remote_file,$file, FTP_ASCII);
+		ftp_close($identifiant_Srv);*/
+
+
 ?>
 
 <!DOCTYPE html>

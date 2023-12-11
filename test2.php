@@ -1,54 +1,34 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<title>ECRANS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+	body {
+		display : flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		min-height: 100vh;
+	}
+	input {
+		font-size: 2rem;
+	}
+	a {
+	text-decoration: none;
+	color: #006CFF;
+	font-size: 1.5rem;
+	}
+</style>
 </head>
 <body>
-<?php
-// Database settings
-$db="ost";
-$dbhost="172.17.5.200";
-$dbport=3306;
-$dbuser="wpuser";
-$dbpasswd="22351414";
- 
-$pdo = new PDO('mysql:host='.$dbhost.';port='.$dbport.';dbname='.$db.'', $dbuser, $dbpasswd);
-$pdo->exec("SET CHARACTER SET utf8");
-?>
-
-<?php 
-$stmt = $pdo->prepare("	SELECT * 
-						FROM `ost_ticket`
-						INNER JOIN `ost_ticket__cdata` ON ost_ticket.ticket_id = ost_ticket__cdata.ticket_id
-						WHERE status_id=1
-						AND dept_id=1
-						ORDER BY created DESC
-						");
-$stmt->bindParam(1,$id);
-$stmt->execute();
-
-
-$res = $stmt->fetchall();
-foreach ( $res as $row ) {
-	$nb=$stmt->rowCount();
-    echo $row['created'];
-	echo "\n";
-	echo "|";
-	echo "\n";
-	echo $row['subject'];
-	//echo "\n";
-	echo "<br>";
-}
-?>
-
-<?php
-echo "<br>";
-echo $nb;
-echo "\n";
-echo "Tickets Ouverts";
-?>
-
-<?php
-$pdo = null;
-?>
+	<a href="view.php">Videos</a>
+	<?php if (isset($_GET['error'])){ ?>
+		<p><?=$_GET['error']?></p>
+	<?php } ?>
+	<form action="save_upload.php" method="post" enctype="multipart/form-data">
+	    <input type="hidden" name="MAX_FILE_SIZE" value="67108864" />
+	    <input type="file" name="ma_video">
+	    <input type="submit" name="submit" value="Upload">
+	</form>
 </body>
 </html>

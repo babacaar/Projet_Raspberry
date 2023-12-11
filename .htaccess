@@ -1,8 +1,11 @@
-
 # BEGIN WordPress
+
 # Les directives (lignes) entre « BEGIN WordPress » et « END WordPress » sont générées
+
 # dynamiquement, et doivent être modifiées uniquement via les filtres WordPress.
+
 # Toute modification des directives situées entre ces marqueurs sera surchargée.
+
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -11,6 +14,12 @@ RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
+RewriteCond %{HTTP_HOST} ^172\.17\.5\.202$
+RewriteRule ^(.*) https://affichage.lpjw.local/$1 [L,R=301]
+RewriteCond %{HTTPS} !=on
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 </IfModule>
 
 # END WordPress
+
+ErrorDocument 404 http://172.17.5.202/404error.php

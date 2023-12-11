@@ -6,7 +6,7 @@
 	$dbuser="root";
 	$dbpasswd="Koxo@361428";
 
-	//Acces RASP Kioskbsif	
+	/*/Acces RASP Kioskbsif	
 		//SSH
 		$ssh_kioskbsif_server= "192.168.250.24";
 		$ssh_kioskbsif_username = "pi";
@@ -18,10 +18,10 @@
 		$ftp_kioskbsif_username = "pi";
 		$ftp_kioskbsif_password = "22351414";
 
-
+*/
 	// NAME servira de nom au fichier texte crée
 	$name = "Myfiles";
-
+	$nom = "MyfilesInfo";
 
 		//EMPLACEMENT DU FICHIER DANS LE RASP
 
@@ -29,6 +29,6 @@
 
 
 		//CREATION DU FICHIER DANS LE RASP
-	$fichier = fopen($name, 'c+b');
+	$fichier1 = fopen($name, 'c+b');
 	
 ?>
