@@ -31,12 +31,17 @@ var formElements = {
 var domElements = {
   alertBanner: document.getElementById("alert-banner"),
   logoImg: document.getElementById("logo-img"),
+  alertPreview: document.getElementById("alert-preview"),
+  alertPreviewMessage: document.getElementById("alert-preview-message"),
 };
 
 var lightPercentage = 60;
 
 // Appliquer les couleurs au chargement de la page
-document.addEventListener("DOMContentLoaded", applyStoredStyles);
+document.addEventListener("DOMContentLoaded", () => {
+  applyStoredStyles();
+  updateAlertPreview();
+});
 
 // Récupérer les éléments du formulaire et détecter les changements
 updateFormElementColor(formElements.primaryColor, "primaryColor");
@@ -50,7 +55,11 @@ updateFormElementText(formElements.infoTextColor, "infoColor");
 if (formElements.backgroundColor) formElements.backgroundColor.addEventListener("change", updateBackgroundColor);
 if (formElements.backgroundImageUrl) formElements.backgroundImageUrl.addEventListener("input", updateBackgroundImage);
 if (formElements.logoUrl) formElements.logoUrl.addEventListener("input", updateLogo);
-if (formElements.alertBlink) formElements.alertBlink.addEventListener("change", updateAlertBlink);
+if (formElements.alertBlink)
+  formElements.alertBlink.addEventListener("change", (e) => {
+    updateAlertBlink(e);
+    updateAlertPreview();
+  });
 
 // Changer les styles dans le CSS
 function updateColor(property, value, lighter = true, text = false) {
@@ -73,6 +82,7 @@ function extractColorName(propertyName) {
 function updateFormElementColor(element, property) {
   if (element) {
     element.addEventListener("change", () => {
+      if (element.id.includes("alert")) updateAlertPreview();
       updateColor(property, element.value);
     });
   }
@@ -82,6 +92,7 @@ function updateFormElementColor(element, property) {
 function updateFormElementText(element, property) {
   if (element) {
     element.addEventListener("change", () => {
+      if (element.id.includes("alert")) updateAlertPreview();
       updateColor(property, element.value, false, true);
     });
   }
@@ -98,7 +109,7 @@ function updateBackgroundImage(e) {
   const imageUrl = e.target.value.trim(); // Trim pour supprimer les espaces blancs
 
   // Vérifier si l'URL est vide ou non
-  const backgroundImageValue = imageUrl ? formatImageUrl(imageUrl) : "";
+  const backgroundImageValue = imageUrl ? formatImageUrl(imageUrl) : formatImageUrl("");
 
   updateColor("bg-image-url", backgroundImageValue, false);
 }
@@ -204,4 +215,27 @@ function saveChanges() {
   });
 }
 
+var alertOverviewCheck = document.getElementById("alert-overview");
 
+if (alertOverviewCheck)
+  alertOverviewCheck.addEventListener("change", (e) => {
+    if (e.target.checked) {
+      domElements.alertPreview.style.display = "flex";
+    } else {
+      domElements.alertPreview.style.display = "none";
+    }
+  });
+
+// Mettre à jour l'aperçu du bandeau d'alerte dans le formulaire
+function updateAlertPreview() {
+  if (domElements.alertPreview && domElements.alertPreviewMessage) {
+    domElements.alertPreview.style.backgroundColor = formElements.alertColor.value;
+    domElements.alertPreviewMessage.style.color = formElements.alertTextColor.value;
+
+    if (formElements.alertBlink.checked) {
+      domElements.alertPreview.classList.add("blink");
+    } else {
+      domElements.alertPreview.classList.remove("blink");
+    }
+  }
+}

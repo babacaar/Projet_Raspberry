@@ -97,6 +97,7 @@
             <img class="logo-img" alt="Banniere" src="lycee.jpg">
         </a>
         <ul>
+<<<<<<< HEAD
 		<li class="dropdown">
     		<a href="javascript:void(0)" class="dropbtn">Hôtes</a>
     		<div class="dropdown-content">
@@ -107,6 +108,20 @@
 		<li><a href="creationgroupe.php">Groupes</a></li>
         </ul>
 
+=======
+            <li><a href="list.php">Hôtes</a></li>
+              
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Groupes</a>
+                <div class="dropdown-content">
+                  <a href="groupe.php">Lister groupes</a>
+                  <a href="creationgroupe.php">Créer nouveau groupe</a>
+                  
+                </div>
+            </li>
+        </ul>
+         
+>>>>>>> 177db45890593ccab23432f790da89f8b0b2565c
      </div>
     <h1>Gestion des Raspberry Pi</h1>
     <form method="post" action="">

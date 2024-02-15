@@ -12,10 +12,12 @@
 </head>
 
 <header>
+<a  href='https://affichage.lpjw.local/menu.php'>
     <img id="logo-img" class="logo-img" src="../images/logo_transparent.png">
+</a>
 
     <?php
-    $siteUrl = "http://affichage.lpjw.local";
+    $siteUrl = "https://affichage.lpjw.local";
 
     if ($dropDownMenu)
         include "header_menu.php";

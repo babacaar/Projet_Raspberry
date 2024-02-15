@@ -9,7 +9,7 @@ include "./modules/header.php";
 
 <body>
     <div class="controller page">
-        <section class="page-content">
+        <section class="page-content-tomorrow">
 
             <!-- <div id="weather-widget"></div> -->
             <h1>Météo Angers</h1>

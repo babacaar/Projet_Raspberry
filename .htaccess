@@ -22,4 +22,4 @@ RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
 # END WordPress
 
-ErrorDocument 404 http://172.17.5.202/404error.php
+ErrorDocument 404 https://affichage.lpjw.local/404error.php

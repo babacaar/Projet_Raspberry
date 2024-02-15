@@ -49,6 +49,11 @@ include "modules/header.php";
                 <a tabindex="0" class="link-btn" href='<?php echo $siteUrl."/custom_style.php" ?>'>
                     <i class="fa-solid fa-paintbrush"></i> Changer Style</a>
                 <span class="description">Permet de modifier le style du site.</span>
+		<hr>
+
+		<a tabindex="0" class="link-btn" href='<?php echo $siteUrl."/configMenu.php" ?>'>
+                    <i class="fa-solid fa-gear"></i> Configuration des Menus</a>
+                <span class="description">Permet de convertir les pages de menus en image JPG.</span>
 
             </div>
         </section>

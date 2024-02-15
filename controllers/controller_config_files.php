@@ -21,7 +21,7 @@ $dbpasswd = "Koxo@361428";
 */
 // NAME servira de nom au fichier texte crée
 $name = "Myfiles";
-$nom = "MyfilesInfo";
+
 
 //EMPLACEMENT DU FICHIER DANS LE RASP
 

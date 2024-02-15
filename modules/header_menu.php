@@ -15,6 +15,10 @@
             <!-------a tabindex="0" href='<?php echo $siteUrl . "/upload_video.php" ?>'  title="Permet d'ajouter des vidéos"-----><!---/a--->
             <a tabindex="0" href='<?php echo $siteUrl . "/custom_style.php" ?>'
                 title="Permet de modifier le style du site"><i class="fa-solid fa-paintbrush"></i> Style</a>
+	    <a tabindex="0" class="link-btn" href='<?php echo $siteUrl."/configMenu.php" ?>'
+		title="Permet de convertir les pages de menus en image JPG">
+                    <i class="fa-solid fa-gear"></i> Configuration des Menus</a>
+
         </div>
 
         <button id="dropdown-btn" tabindex="1">

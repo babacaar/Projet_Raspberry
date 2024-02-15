@@ -96,7 +96,6 @@ BASH;
 
             $selectedGroups = isset($_POST["groupIDs"]) ? $_POST["groupIDs"] : [];
             // var_dump($selectedGroups);
-            
             try {
                 // Établir une connexion à la base de données
                 $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db, $dbuser, $dbpasswd);
@@ -143,7 +142,6 @@ BASH;
                                 throw new Exception("Connexion impossible en tant que $username");
                             }
                             // var_dump($username);
-            
                             // Transfert du fichier
                             $remote_file = $name;
                             ftp_put($identifiant_Srv, $remote_file, $file, FTP_ASCII);

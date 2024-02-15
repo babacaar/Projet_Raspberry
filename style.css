@@ -62,7 +62,7 @@ body {
 }
 
 span {
-  color: var(--text-color);
+  color: black;
 }
 
 .background-image {
@@ -97,7 +97,7 @@ footer {
 
 footer a {
   /* text-decoration: none; */
-  color: var(--text-color) !important;
+  color: black !important;
 }
 
 h1 {
@@ -112,6 +112,7 @@ h4 {
   margin-top: 0;
   color: var(--primary);
   font-weight: bold;
+  ;
 }
 
 hr {
@@ -136,7 +137,7 @@ a:visited {
 }
 
 i {
-  color: var(--text-color);
+  color: black;
 }
 
 .page {
@@ -146,9 +147,20 @@ i {
   align-content: center;
   width: 100%;
 }
+.page-content-tomorrow {
+  background-color: white;
+  margin: 30px 20px;
+  padding: 50px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px 3px black;
+  display: flex;
+  flex-direction: column;
+  width:70%;  
+}
 
 .page-content {
-  background-color: var(--theme-color);
+  background-color: white;
   margin: 30px 20px;
   padding: 50px;
   box-sizing: border-box;
@@ -176,16 +188,43 @@ i {
   margin-right: 20px;
 }
 
+/*---------------MESSAGES & TOOLTIPS---------------*/
+
 .message {
   margin: 20px 0;
+  max-width: 500px;
 }
 
 .debug-msg {
-  color: var(--alert);
+  color: red;
+  font-weight: bold;
 }
 
 .colored-icon {
   color: var(--secondary);
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-content {
+  display: none;
+  font-weight: 400;
+  font-size: 12px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--grey1);
+  border: 1px solid var(--grey2);
+  padding: 10px;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.tooltip:hover .tooltip-content {
+  display: block;
 }
 
 /*---------------BUTTONS---------------*/
@@ -195,8 +234,8 @@ input[type="button"],
 .back-btn {
   font-weight: bold;
   font-size: 16px;
-  background-color: var(--theme-color);
-  color: var(--text-color);
+  background-color: white;
+  color: black;
   box-shadow: 3px 3px 3px black;
   border-radius: 3px;
   padding: 10px;
@@ -210,7 +249,7 @@ input[type="button"],
 .back-btn {
   text-decoration: none;
   width: fit-content;
-  color: var(--text-color) !important;
+  color: black !important;
 }
 
 .back-btn i {
@@ -221,7 +260,7 @@ button:hover,
 input[type="button"]:hover,
 .back-btn:hover {
   background-color: var(--light-secondary);
-  color: var(--text-color);
+  color: black;
 }
 
 button:active,
@@ -229,11 +268,11 @@ input[type="button"]:active,
 .back-btn:active {
   background-color: var(--secondary);
   transform: translateY(4px);
-  color: var(--theme-color);
+  color: white;
 }
 
 button:active i {
-  color: var(--theme-color);
+  color: white;
 }
 
 .btns-line {
@@ -290,8 +329,8 @@ fieldset {
 input[type="text"],
 input[type="date"],
 input[type="datetime-local"] {
-  background-color: var(--theme-color);
-  color: var(--text-color);
+  background-color: white;
+  color: black;
   width: 100%;
   padding: 12px 20px;
   margin: 10px 0;
@@ -302,8 +341,8 @@ input[type="datetime-local"] {
 input[type="number"] {
   max-width: 50px;
   height: 40px;
-  background-color: var(--theme-color);
-  color: var(--text-color);
+  background-color: white;
+  color: black;
   width: 100%;
   padding: 5px;
   margin: 10px 0;
@@ -316,7 +355,7 @@ input[type="color"] {
   height: 30px;
   padding: 5px;
   margin-right: 10px;
-  background-color: var(--theme-color);
+  background-color: white;
   box-shadow: 3px 3px 3px black;
   border-radius: 3px;
   border: none;
@@ -343,8 +382,8 @@ input[type="submit"],
 .reset-btn {
   float: right;
   text-align: center;
-  background-color: var(--theme-color);
-  color: var(--text-color);
+  background-color: white;
+  color: black;
   box-shadow: 3px 3px 3px black;
   border-radius: 3px;
   padding: 10px;
@@ -356,6 +395,7 @@ input[type="submit"],
 
 input[type="checkbox"] {
   width: auto;
+  accent-color: var(--secondary);
 }
 
 .reset-btn {
@@ -373,7 +413,7 @@ input[type="submit"]:active,
 .reset-btn:active {
   background-color: var(--secondary);
   transform: translateY(4px);
-  color: var(--theme-color);
+  color: white;
 }
 
 select {
@@ -382,11 +422,11 @@ select {
   padding: 12px 20px;
   border-radius: 10px;
   cursor: pointer;
-  background-color: var(--theme-color);
+  background-color: white;
 }
 
 label {
-  color: var(--text-color);
+  color: black;
   font-weight: bold;
   margin-top: 10px;
   display: inline-block;
@@ -422,13 +462,13 @@ label {
 
 .banner {
   background-color: var(--alert);
-  color: var(--theme-color);
+  color: white;
   text-align: center;
   padding: 10px;
   width: 100%;
   height: 500px;
   z-index: 5;
-  display: none; /* Masquer initialement le bandeau */
+  display: none; 
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -441,6 +481,15 @@ label {
   font-size: 5.5vw; /* vw permet d'adapter la taille du texte à la largeur de la page*/
   font-weight: bold;
   text-transform: uppercase;
+}
+
+.banner.overview {
+  display: none;
+  max-height: 300px;
+} 
+
+.banner.overview p {
+  font-size: 50px;
 }
 
 .info-banner {
@@ -484,6 +533,7 @@ label {
   text-align: center;
   padding: 10px 0;
   font-size: 24px;
+  color: black;
 }
 
 .menu-container hr {
@@ -593,8 +643,8 @@ label {
 .link-btn {
   font-size: 16px;
   font-weight: bold;
-  background-color: var(--theme-color);
-  color: var(--text-color) !important;
+  background-color: white;
+  color: black ;
   box-shadow: 3px 3px 3px black;
   text-align: right;
   text-decoration: none;
@@ -614,14 +664,14 @@ label {
 .dropdown-content a:hover,
 .link-btn:hover {
   background-color: var(--light-secondary);
-  color: var(--text-color);
+  color: black;
 }
 
 .dropdown-content a:active,
 .link-btn:active {
   background-color: var(--secondary);
   transform: translateY(4px);
-  color: var(--theme-color);
+  color: white ;
 }
 
 .alert-menu button:first-child,
@@ -691,6 +741,7 @@ td {
   text-align: left;
   padding: 8px;
   border-bottom: 1px solid var(--grey2);
+  
 }
 
 th {
@@ -741,11 +792,35 @@ tr:nth-child(even) {
 
 .list .container {
   width: 100%;
-  background-color: var(--theme-color);
+  background-color: white;
 }
 
 .pi-details {
   margin-top: 20px;
+}
+
+/*---------------INFORMATIONS GRID---------------*/
+
+.informations .page-content {
+  min-width: 95vw;
+  min-height: 90vh;
+}
+
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  grid-auto-rows: minmax(100px, auto);
+}
+
+.one {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+}
+
+.two {
+  grid-column: 3;
+  grid-row: 1 / 3;
 }
 
 /*---------------WHEATHER WIDGET---------------*/
@@ -767,3 +842,65 @@ tr:nth-child(even) {
   width: 250px;
   height: 18px;
 }
+
+.tomorrow iframe {
+  height: 100%;
+  font-size: 20px;
+}
+
+
+#ww_3c6e5842e3df1 {
+  /* Ajoutez les propriétés CSS pour rendre le widget vertical */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 700px;
+}
+
+.ww-box {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.ww_col2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.ww_col2 .ww_child {
+  display: flex;
+  flex-direction: row !important;
+}
+
+.ww_col2 .data {
+  display: flex;
+  flex-direction: row !important;
+}
+
+.ww_child .location {
+  font-size: 30px;
+}
+
+.ww_child .date,
+.ww_child .day,
+.ww_child .night {
+  font-size: 24px;
+}
+
+
+/*Spinner pour le chargement*/
+
+        #spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+	
+	.d-none {
+    	display: none !important;
+	}
+
