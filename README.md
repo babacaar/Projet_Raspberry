@@ -1,7 +1,9 @@
 # Ecran-dynamique
+
 1. Contexte et objectifs 
 
 1.1 Contexte 
+
 Le lycée LPJW souhaite moderniser son système de communication interne et d'affichage d'informations. L'objectif est de diffuser des informations de manière dynamique et centralisée sur des écrans répartis dans l'enceinte du lycée. 
 
 Centraliser et diffuser les informations importantes de manière claire et efficace. 
@@ -15,6 +17,7 @@ Moderniser l'image du lycée et son attractivité.
  
 
 1.2 Objectifs 
+
 Le présent projet vise à développer une application web pour le lycée, accessible depuis un Raspberry Pi, permettant de gérer divers aspects de la vie scolaire : 
 
 Gestion des absences des professeurs et du personnel. 
@@ -30,6 +33,7 @@ Gestion des menus et conversion en images pour affichage
  
 
 2. Fonctionnalités principales 
+
 L'application web propose les fonctionnalités suivantes : 
 
 Affichage Actuel : Configuration des URL des contenus à afficher sur les écrans connectés. 
@@ -51,7 +55,9 @@ Configuration des Menus : Conversion des pages de menus en images pour une meill
  
 
 3. Architecture technique et choix technologiques 
+
 3.1 Architecture du site 
+
 Le projet est basé sur une architecture LAMP :  
 
 Linux : Système d'exploitation stable et sécurisé, largement utilisé pour les serveurs web. 
@@ -65,6 +71,7 @@ PHP : Langage de programmation backend pour le développement d'applications web
  
 
 3.2 Choix technologiques 
+
 Langages de programmation : 
 
 PHP : Pour le développement backend de l'application web dynamique. Il offre une grande flexibilité et s'intègre facilement avec la base de données MySQL. 
