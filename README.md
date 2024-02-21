@@ -15,7 +15,9 @@ Faciliter la gestion des absences.
 
 Moderniser l'image du lycée et son attractivité. 
 
+
 # 
+ # 
 
 1.2 Objectifs 
 
@@ -32,6 +34,7 @@ Personnalisation du style de l'interface pour chaque utilisateur.
 Gestion des menus et conversion en images pour affichage 
 
 # 
+ # 
 
 2. Fonctionnalités principales 
 
@@ -52,6 +55,7 @@ Personnalisation de l'interface : Les utilisateurs pourront personnaliser leur p
 Configuration des Menus : Conversion des pages de menus en images pour une meilleure lisibilité sur les écrans. 
 
 # 
+ # 
 
 3. Architecture technique et choix technologiques 
 
@@ -68,6 +72,7 @@ MySQL : Base de données relationnelle robuste et fiable pour stocker les donné
 PHP : Langage de programmation backend pour le développement d'applications web dynamiques. 
 
 # 
+ # 
 
 3.2 Choix technologiques 
 
