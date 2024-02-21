@@ -34,7 +34,7 @@ include "../modules/header.php";
                     $durationInSeconds = $hours * 3600 + $minutes * 60 + $seconds;
 
                     // Préparer la requête SQL pour l'insertion
-                    $insertStmt = $pdo->prepare("INSERT INTO informations (titre, infos, duration_seconds) VALUES (:titre, :infos, :durationSeconds)");
+                    $insertStmt = $pdo->prepare("INSERT INTO Informations (titre, infos, duration_seconds) VALUES (:titre, :infos, :durationSeconds)");
                     $insertStmt->bindParam(':titre', $titre);
                     $insertStmt->bindParam(':infos', $info);
                     $insertStmt->bindParam(':durationSeconds', $durationInSeconds);
@@ -42,7 +42,7 @@ include "../modules/header.php";
                     if ($insertStmt->execute()) {
 
                         // Récupérer les données pour afficher sur une nouvelle page
-                        $stmt1 = $pdo->prepare("SELECT infos, duration_seconds FROM `informations`");
+                        $stmt1 = $pdo->prepare("SELECT infos, duration_seconds FROM `Informations`");
                         $stmt1->execute();
                         $res1 = $stmt1->fetch(PDO::FETCH_ASSOC);
                         $news = $res1['infos'];
@@ -69,7 +69,7 @@ include "../modules/header.php";
                 $nombre_iterations = $res2['nombre_de_liens'];
 
                 $compteur = 0; // Réinitialisation du compteur
-            
+
                 $static = <<<BASH
     #!/bin/bash
     # Compteur d'itérations
@@ -105,22 +105,22 @@ include "../modules/header.php";
         ((compteur++))
 
         # Vérifie si le nombre d'itérations spécifié est atteint
-        if [ "$compteur" -eq "$nombre_iterations" ]; then
+        #if [ "$compteur" -eq "$nombre_iterations" ]; then
             # Arrêtez le processus Chromium
-            fermer_onglets_chromium
+           # fermer_onglets_chromium
 
             # Lancement de la vidéo avec VLC
-            mpv --fs /home/pi/Videos/Gestes.mp4
+            #mpv --fs /home/pi/Videos/Gestes.mp4
 
             # Relancer Chromium après que VLC ait terminé
-            lancer_chromium
+           # lancer_chromium
 
             # Réinitialisez le compteur
-            compteur=0
-        fi
+            #compteur=0
+        #fi
     done
 BASH;
-                $nom = isset($nom) ? $nom : ''; // Définition de $nom avec une valeur par défaut si non défini
+                $nom = "MyfilesInfo"; // Définition de $nom avec une valeur par défaut si non défini
                 $file = $dir . $nom . ".sh";
 
                 // Liste des adresses IP des Raspberry Pi
@@ -203,7 +203,6 @@ BASH;
 
                             $msg .= "Script de redémarrage exécuté avec succès sur $ip <br>";
                             // include "./modules/success.php";
-            
                             // Si nous sommes arrivés ici, cela signifie qu'il n'y a pas eu d'erreurs.
                             $msg .= "<br> Toutes les opérations ont été effectuées avec succès !";
                             include "../modules/success.php";

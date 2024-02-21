@@ -13,7 +13,7 @@ $dbpasswd = "Koxo@361428";
 	   $ssh_kioskbsif_password = "22351414";
 	   $ssh_kioskbsif_port = "22";
 
-	   //FTP				
+	   //FTP
 	   $ftp_kioskbsif_server = "192.168.250.24";
 	   $ftp_kioskbsif_username = "pi";
 	   $ftp_kioskbsif_password = "22351414";
@@ -21,7 +21,7 @@ $dbpasswd = "Koxo@361428";
 */
 // NAME servira de nom au fichier texte crée
 $name = "Myfiles";
-
+$nom ="MyfilesInfo";
 
 //EMPLACEMENT DU FICHIER DANS LE RASP
 

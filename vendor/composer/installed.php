@@ -1,51 +1,51 @@
 <?php return array (
   'root' => 
   array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
+    'pretty_version' => '1.0.0+no-version-set',
+    'version' => '1.0.0.0',
     'aliases' => 
     array (
     ),
-    'reference' => '57efe6ccb6caa947942c088796cf6d4cdf0d813e',
+    'reference' => NULL,
     'name' => '__root__',
   ),
   'versions' => 
   array (
     '__root__' => 
     array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
+      'pretty_version' => '1.0.0+no-version-set',
+      'version' => '1.0.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '57efe6ccb6caa947942c088796cf6d4cdf0d813e',
+      'reference' => NULL,
     ),
-    'paragonie/constant_time_encoding' => 
+    'sabre/uri' => 
     array (
-      'pretty_version' => 'v2.6.3',
-      'version' => '2.6.3.0',
+      'pretty_version' => '3.0.1',
+      'version' => '3.0.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => '58c3f47f650c94ec05a151692652a868995d2938',
+      'reference' => '1774043c843f1db7654ecc93368a98be29b07544',
     ),
-    'paragonie/random_compat' => 
+    'sabre/vobject' => 
     array (
-      'pretty_version' => 'v9.99.100',
-      'version' => '9.99.100.0',
+      'pretty_version' => '4.5.4',
+      'version' => '4.5.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '996434e5492cb4c3edcb9168db6fbb1359ef965a',
+      'reference' => 'a6d53a3e5bec85ed3dd78868b7de0f5b4e12f772',
     ),
-    'phpseclib/phpseclib' => 
+    'sabre/xml' => 
     array (
-      'pretty_version' => '3.0.34',
-      'version' => '3.0.34.0',
+      'pretty_version' => '4.0.4',
+      'version' => '4.0.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '56c79f16a6ae17e42089c06a2144467acc35348a',
+      'reference' => '99caa5dd248776ca6a1e1d2cfdef556a3fa63456',
     ),
   ),
 );

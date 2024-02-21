@@ -24,7 +24,7 @@ include "modules/header.php";
           $image_name = "menupeda.jpg";
 
           // Convertir le PDF en image
-          $command = "gm convert -density 700 -resize 1920x1080 -quality 95 " . $temp_file . " " . $destination_dir . $image_name;
+          $command = "gm convert -density 700 -resize 1920x1080! -quality 95 " . $temp_file . " " . $destination_dir . $image_name;
           exec($command);
 
           // Afficher un message de succès

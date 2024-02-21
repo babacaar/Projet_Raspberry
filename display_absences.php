@@ -14,15 +14,91 @@ $stmt1->execute();
 $res1 = $stmt1->fetchall();
 
 // Nom du fichier iCal à lire
-$iCalFile = "testCalendar.ics"
-?>
+$iCalFile = "testest.ics";
+//var_dump($iCalFile);
 
+// Fonction iCalDecoder
+// Fonction iCalDecoder
+function iCalDecoder($file)
+{
+    $ical = file_get_contents($file);
+
+    // preg_match_all analyse $ical pour trouver l'expression qui correspond au pattern '/(BEGIN:VEVENT.*?END:VEVENT)/si'
+    // on extrait ainsi les blocs d'événements entre BEGIN:VEVENT et END:VEVENT (balises de fichier iCal)
+    preg_match_all('/(BEGIN:VEVENT.*?END:VEVENT)/si', $ical, $result, PREG_PATTERN_ORDER);
+
+    $icalArray = array();
+
+    foreach ($result[0] as $eventBlock) {
+        // on divise les lignes du bloc d'événement en utilisant le retour chariot comme délimiteur
+        $eventLines = explode("\r\n", $eventBlock);
+
+        $eventData = array();
+
+        foreach ($eventLines as $item) {
+            // on divise chaque ligne en deux parties (clé et valeur) en utilisant le caractère ":" comme délimiteur
+            $lineParts = explode(":", $item);
+
+            if (count($lineParts) > 1) {
+                $eventData[$lineParts[0]] = $lineParts[1];
+            }
+        }
+
+        // Vérifier si la clé "DTSTART" existe avant de l'ajouter au tableau des données d'événement
+        if (isset($eventData['DTSTART'])) {
+            if (preg_match('/DESCRIPTION:(.*)END:VEVENT/si', $eventBlock, $regs)) {
+                $eventData['DESCRIPTION'] = str_replace("  ", " ", str_replace("\r\n", "", $regs[1]));
+            }
+
+            // condition pour ne pas afficher les événements passés
+            $eventStartDate = strtotime($eventData['DTSTART']);
+            $now = time();
+            if ($eventStartDate > $now) {
+                $icalArray[] = $eventData;
+            }
+        }
+    }
+
+    // Trier les événements par date et heure de début
+    usort($icalArray, function ($a, $b) {
+        return strtotime($a['DTSTART']) - strtotime($b['DTSTART']);
+    });
+
+    // Limiter le nombre d'événements à 3
+    $icalArray = array_slice($icalArray, 0, 3);
+
+    return $icalArray;
+}
+
+// Fonction d'affichage des événements
+function displayEvents($events)
+{
+    $now = time(); // Timestamp actuel
+
+    // Tri des événements par date de début
+    usort($events, function ($a, $b) {
+        return strtotime($a['DTSTART']) - strtotime($b['DTSTART']);
+    });
+
+    foreach ($events as $event) {
+        $eventStartTimestamp = strtotime($event['DTSTART']);
+
+        // Vérifier si l'événement est à venir
+        if ($eventStartTimestamp > $now) {
+            echo "
+                <tr>
+                    <td>" . $event['SUMMARY'] . "</td>
+                    <td >" . date('d/m/Y à H:i', $eventStartTimestamp) . "</td>
+                </tr>";
+        }
+    }
+}
+?>
 <!------------BODY------------>
 
 <body>
     <div class="absences page">
         <section class="page-content-tomorrow">
-		<h1><?php echo date('H:i:s');?></h1>
             <div class="grid-wrapper">
                 <div class="one">
                     <h2>Absences du Personnel</h2>
@@ -55,89 +131,23 @@ $iCalFile = "testCalendar.ics"
                     <hr>
 
                     <table>
-
                         <tr>
                             <th>Événement à venir</th>
                             <th>Date</th>
                         </tr>
 
-                        <?php
-                        // Fonction iCalDecoder
-                        function iCalDecoder($file)
-                        {
-                            $ical = file_get_contents($file);
-
-                            // preg_match_all analyse $ical pour trouver l'expression qui correspond au pattern '/(BEGIN:VEVENT.*?END:VEVENT)/si'
-                            // on extrait ainsi les blocs d'événements entre BEGIN:VEVENT et END:VEVENT (balises de fichier iCal)
-                            preg_match_all('/(BEGIN:VEVENT.*?END:VEVENT)/si', $ical, $result, PREG_PATTERN_ORDER);
-
-                            $icalArray = array();
-
-                            foreach ($result[0] as $eventBlock) {
-                                // on divise les lignes du bloc d'événement en utilisant le retour chariot comme délimiteur
-                                $eventLines = explode("\r\n", $eventBlock);
-
-                                $eventData = array();
-
-                                foreach ($eventLines as $item) {
-                                    // on divise chaque ligne en deux parties (clé et valeur) en utilisant le caractère ":" comme délimiteur
-                                    $lineParts = explode(":", $item);
-
-                                    if (count($lineParts) > 1) {
-                                        $eventData[$lineParts[0]] = $lineParts[1];
-                                    }
-                                }
-
-                                if (preg_match('/DESCRIPTION:(.*)END:VEVENT/si', $eventBlock, $regs)) {
-                                    $eventData['DESCRIPTION'] = str_replace("  ", " ", str_replace("\r\n", "", $regs[1]));
-                                }
-
-                                // condition pour ne pas afficher les événements passés
-                                $eventStartDate = strtotime($eventData['DTSTART']);
-                                $now = time();
-                                if ($eventStartDate > $now) {
-                                    $icalArray[] = $eventData;
-                                }
-                            }
-                            // Trier les événements par date et heure de début
-                            usort($icalArray, function ($a, $b) {
-                                return strtotime($a['DTSTART']) - strtotime($b['DTSTART']);
-                            });
-
-                            // Limiter le nombre d'événements à 3
-                            $icalArray = array_slice($icalArray, 0, 3);
-
-                            return $icalArray;
-                        }
-
-
-
-                        // Fonction d'affichage des événements
-                        function displayEvents($events)
-                        {
-                            $now = date('Y-m-d H:i:s'); // Date et heure actuelles
-
-                            // Tri des événements par date de début
-                            usort($events, function ($a, $b) {
-                                return strtotime($a['DTSTART']) - strtotime($b['DTSTART']);
-                            });
-
-                            foreach ($events as $event) {
-
-                                // Affichage des événements futurs
-                                if ($event['DTSTART'] > $now) {
-                                    echo "
-                                        <tr>
-                                        <td>" . $event['SUMMARY'] . "</td>
-                                        <td >" . date('d/m/Y à H:i', strtotime($event['DTSTART'])) . "</td>
-                                    </tr>";
-                                }
-                            }
-                        }
+                       <?php
                         // Fichier iCal à lire
                         $events = iCalDecoder($iCalFile);
-                        // Afficher les événements
-                        displayEvents($events); ?>
+
+                        // Vérifier si la variable $events est définie et non vide avant d'appeler displayEvents
+                        if (isset($events) && !empty($events)) {
+                            displayEvents($events);
+                        } else {
+                            // Gérer le cas où $events n'est pas défini ou est vide
+                            echo "<tr><td colspan='2'>Aucun événement à afficher.</td></tr>";
+                        }
+                        ?>
                     </table>
                 </div>
 
@@ -145,10 +155,8 @@ $iCalFile = "testCalendar.ics"
                     <h2>Météo de la Semaine</h2>
                     <hr>
 
-                    <div id="ww_3c6e5842e3df1" v='1.3' loc='id'
-                        a='{"t":"responsive","lang":"fr","sl_lpl":1,"ids":["wl7516"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"#FFFFFF","cl_font":"#000000","cl_cloud":"#d4d4d4","cl_persp":"#2196F3","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722","cl_odd":"#0000000a"}'>
-                        Plus de prévisions: <a href="https://oneweather.org/fr/paris/20_jours/" id="ww_3c6e5842e3df1_u"
-                            target="_blank">Météo 20 jours</a>
+                    <div id="ww_3c6e5842e3df1" v='1.3' loc='id' a='{"t":"responsive","lang":"fr","sl_lpl":1,"ids":["wl7516"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"#FFFFFF","cl_font":"#000000","cl_cloud":"#d4d4d4","cl_persp":"#2196F3","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722","cl_odd":"#0000000a"}'>
+                        Plus de prévisions: <a href="https://oneweather.org/fr/paris/20_jours/" id="ww_3c6e5842e3df1_u" target="_blank">Météo 20 jours</a>
                     </div>
                     <script async src="https://app2.weatherwidget.org/js/?id=ww_3c6e5842e3df1"></script>
                 </div>

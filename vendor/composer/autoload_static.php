@@ -4,31 +4,35 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit061f5c932ad136832b4db35287ab252e
+class ComposerStaticInit801b2c7d8a31b73af5d7e7113d554a8a
 {
     public static $files = array (
-        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+        '383eaff206634a77a1be54e64e6459c7' => __DIR__ . '/..' . '/sabre/uri/lib/functions.php',
+        '3569eecfeed3bcf0bad3c998a494ecb8' => __DIR__ . '/..' . '/sabre/xml/lib/Deserializer/functions.php',
+        '93aa591bc4ca510c520999e34229ee79' => __DIR__ . '/..' . '/sabre/xml/lib/Serializer/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
-        'p' => 
+        'S' => 
         array (
-            'phpseclib3\\' => 11,
-        ),
-        'P' => 
-        array (
-            'ParagonIE\\ConstantTime\\' => 23,
+            'Sabre\\Xml\\' => 10,
+            'Sabre\\VObject\\' => 14,
+            'Sabre\\Uri\\' => 10,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'phpseclib3\\' => 
+        'Sabre\\Xml\\' => 
         array (
-            0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
+            0 => __DIR__ . '/..' . '/sabre/xml/lib',
         ),
-        'ParagonIE\\ConstantTime\\' => 
+        'Sabre\\VObject\\' => 
         array (
-            0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
+            0 => __DIR__ . '/..' . '/sabre/vobject/lib',
+        ),
+        'Sabre\\Uri\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabre/uri/lib',
         ),
     );
 
@@ -39,9 +43,9 @@ class ComposerStaticInit061f5c932ad136832b4db35287ab252e
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit061f5c932ad136832b4db35287ab252e::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit061f5c932ad136832b4db35287ab252e::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit061f5c932ad136832b4db35287ab252e::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit801b2c7d8a31b73af5d7e7113d554a8a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit801b2c7d8a31b73af5d7e7113d554a8a::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit801b2c7d8a31b73af5d7e7113d554a8a::$classMap;
 
         }, null, ClassLoader::class);
     }

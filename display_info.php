@@ -1,7 +1,7 @@
 <!------------HEADER------------>
 <?php
 $pageTitle = "Informations"; // Titre de la page
-$dropDownMenu = true;
+$dropDownMenu = false;
 include "modules/header.php";
 ?>
 
