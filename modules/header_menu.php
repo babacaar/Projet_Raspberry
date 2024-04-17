@@ -19,6 +19,9 @@
 		title="Permet de convertir les pages de menus en image JPG">
                     <i class="fa-solid fa-gear"></i> Configuration des Menus</a>
 
+	    <a tabindex="0" class="link-btn" href='<?php echo $siteUrl."/deconnectemoi.php" ?>'
+                title="Déconnexion">
+                    <i class="fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i> Se déconnecter</a>
         </div>
 
         <button id="dropdown-btn" tabindex="1">

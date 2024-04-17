@@ -45,7 +45,7 @@ include "modules/header.php";
                 <?php
                 require_once "controllers/controller_config_files.php";
                 $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
-                $stmt0 = $pdo->prepare("SELECT * FROM `configuration` ORDER BY Conf_id DESC LIMIT 1");
+                $stmt0 = $pdo->prepare("SELECT * FROM `configuration` ORDER BY Conf_id DESC LIMIT 3");
                 $stmt0->bindParam(1, $id);
                 $stmt0->execute();
                 $res0 = $stmt0->fetchall();
@@ -55,9 +55,43 @@ include "modules/header.php";
                     $dateLastModif = $row0['Conf_date'];
                     date_default_timezone_set('Europe/Paris');
                     $Conf_date = date('j-M-Y à H:i:s');
-                    echo "<p class='date'>" . $Conf_date . "</p>" . "<p class='link'>" . $link . "</p>";
-                }
+		   // echo "<span class='date'>" . $Conf_date . "</span><span class='link'>" . $link . "</span><button class='copy-link-btn' data-link='" . $link . "'><i class='fa-solid fa-copy'></i> Copier</button>";
+		   // echo "<br>";
+		    echo "<div>"; // Commence une nouvelle ligne
+   		    echo "<span class='date'>" . $dateLastModif . "</span>"; // Affiche la date
+                    echo "<span class='link'>" . $link . "</span>"; // Affiche le lien
+    		    echo "<button class='copy-link-btn' data-link='" . $link . "'><i class='fa-solid fa-copy'></i> Copier</button>"; // Affiche le bouton Copier
+   		    echo "</div>";
+    		    echo "<br>";
+            	}
+
                 ?>
+                <script>
+                    // Ajoutez ce code JavaScript à votre fichier ou directement dans la balise <script> de votre page
+		document.addEventListener('DOMContentLoaded', function() {
+   		var copyLinkBtns = document.querySelectorAll('.copy-link-btn');
+
+    		    copyLinkBtns.forEach(function(btn) {
+		        btn.addEventListener('click', function() {
+            		var linkText = this.parentNode.querySelector('.link').innerText;
+
+            		navigator.clipboard.writeText(linkText)
+                	.then(function() {
+                 	btn.classList.add('copy-success');
+			//alert('Lien copié dans le presse-papiers!');
+				setTimeout(function() {
+                        	btn.classList.remove('copy-success');
+                    		}, 2000);
+			})
+                		.catch(function(err) {
+                    		      console.error('Erreur lors de la copie du lien :', err);
+                    		      alert('Erreur lors de la copie du lien. Veuillez copier manuellement.');
+                		});
+        	        });
+    		    });
+		});
+
+                </script>
             </div>
         </section>
     </div>

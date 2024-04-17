@@ -20,6 +20,15 @@ include "modules/header.php";
                 <label for="ip">Adresse IP <span class="required">*</span></label>
                 <input type="text" id="ip" name="ip" required>
 
+		<label for="video_acceptance">Accepte les vidéos ? <span class="required">*</span></label><br>
+
+		<input type="radio" id="accept_yes" name="video_acceptance" value="OUI" required>
+		<label for="accept_yes">Oui</label><br>
+
+		<input type="radio" id="accept_no" name="video_acceptance" value="NON" required>
+		<label for="accept_no">Non</label><br><br>
+
+
                 <div class="checkbox">
                     <input type="checkbox" name="showHosts" id="showHosts">
                     <label for="showHosts">
@@ -75,16 +84,18 @@ include "modules/header.php";
                     $ip = $_POST['ip'];
                     $username = $_POST['username'];
                     $password = $_POST['password'];
+		    $videoAcceptance = ($_POST['video_acceptance'] == "OUI") ? 1 : 0; // Convertir "oui" en 1 et "non" en 0
                     // $target_pis = implode(',', $_POST['target_pis']); // Si vous souhaitez stocker les IP sous forme de chaîne
-            
+
                     // Requête d'insertion dans la table
-                    $stmt = $conn->prepare("INSERT INTO pis (name, ip, username, password) VALUES (:name, :ip, :username, :password)");
+                    $stmt = $conn->prepare("INSERT INTO pis (name, ip, username, password, video_acceptance) VALUES (:name, :ip, :username, :password, :video_acceptance)");
                     $stmt->bindParam(':name', $name);
                     $stmt->bindParam(':ip', $ip);
                     $stmt->bindParam(':username', $username);
                     $stmt->bindParam(':password', $password);
+		    $stmt->bindParam(':video_acceptance', $videoAcceptance, PDO::PARAM_INT);
                     //$stmt->bindParam(':target_pis', $target_pis);
-            
+
                     // Exécution de la requête
                     $stmt->execute();
 

@@ -103,9 +103,9 @@ include "modules/header.php";
                     <button tabindex="0" id="delete-button" tabindex="0" title="Supprimer les groupes sélectionnés"><i
                             class="fa-solid fa-trash"></i>Supprimer</button>
                     <button tabindex="0" id="push-file-button" tabindex="0" title="Ajouter les fichiers à l'hôte sélectionné"><i
-                            class="fa-solid fa-circle-plus"></i>Ajouter</button>
+                            class="fa-solid fa-rotate-right"></i>Rafraichir</button>
                     <button tabindex="0" id="reboot-button" tabindex="0" title="Redémarrer les hôtes"><i
-                            class="fa-solid fa-rotate-right"></i>Redémarrer</button>
+                            class="fa-solid fa-power-off"></i>Redémarrer</button>
 
                     <div class="alert-menu-container">
                         <div class="alert-menu">

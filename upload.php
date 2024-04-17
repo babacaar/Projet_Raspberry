@@ -1,51 +1,71 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-var_dump($_POST);
-if(isset($_POST["submit"])) {
+
+require_once "controllers/controller_config_files.php";
+
+// Vérifier si le formulaire a été soumis et si un fichier a été téléchargé
+if(isset($_POST["submit"]) && isset($_FILES["video"])) {
     $targetDir = "/var/www/monsite.fr/Videos/";
-    $targetFile = $targetDir . basename($_FILES["video"]["name"]);
-    $uploadOk = 1;
-    $videoFileType = strtolower(pathinfo($targetFile,PATHINFO_EXTENSION));
+    $targetFile = $targetDir . "video.mp4"; // Renommer le fichier téléchargé en "video.mp4"
 
-    // Vérifie si le fichier vidéo est une vidéo réelle ou une fausse vidéo
-    if(isset($_POST["submit"])) {
-	$check = mime_content_type($_FILES["video"]["tmp_name"]);
-        if($check !== false) {
-            echo "Le fichier est une vidéo - " . $check["mime"] . ".";
-            $uploadOk = 1;
-        } else {
-            echo "Le fichier n'est pas une vidéo.";
-            $uploadOk = 0;
-        }
-    }
-
-    // Vérifie si le fichier vidéo existe déjà
-    if (file_exists($targetFile)) {
-        echo "Désolé, le fichier existe déjà.";
-        $uploadOk = 0;
-    }
-
-    // Vérifie la taille du fichier (ici, 100 Mo)
-    if ($_FILES["video"]["size"] > 100000000) {
-        echo "Désolé, votre fichier est trop volumineux.";
-        $uploadOk = 0;
-    }
-
-    // Autorise certains formats de fichiers
-    $allowedExtensions = array("mp4", "avi", "mov", "mkv");
-    if (!in_array($videoFileType, $allowedExtensions)) {
-    echo "Désolé, seuls les fichiers MP4, AVI, MOV et MKV sont autorisés.";
-    $uploadOk = 0;
-    }
-
-    // Vérifie si $uploadOk est défini à 0 par une erreur
-    if ($uploadOk == 0) {
-        echo "Désolé, votre fichier n'a pas été téléchargé.";
-    // Si tout est ok, essaye de télécharger le fichier
+    // Vérifier si le fichier vidéo est une vidéo réelle ou une fausse vidéo
+    $check = getimagesize($_FILES["video"]["tmp_name"]);
+    if($check !== false) {
+        echo "Le fichier est une vidéo.";
     } else {
+        echo "Le fichier n'est pas une vidéo.";
+    }
+
+    // Afficher les éventuelles erreurs lors du téléchargement
+    if ($_FILES["video"]["error"] > 0) {
+        echo "Erreur de téléchargement : " . $_FILES["video"]["error"];
+    } else {
+        // Si tout est OK, essayez de télécharger le fichier en écrasant les fichiers existants
         if (move_uploaded_file($_FILES["video"]["tmp_name"], $targetFile)) {
-            echo "Le fichier ". htmlspecialchars( basename( $_FILES["video"]["name"])). " a été téléchargé.";
+            echo "Le fichier a été téléchargé.";
+
+            // Parcourir chaque groupe sélectionné
+            foreach ($_POST["groupIDs"] as $groupId) {
+                try {
+                    $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db, $dbuser, $dbpasswd);
+                    // Récupérer les adresses IP, nom d'utilisateur et mot de passe des Raspberry Pi pour ce groupe depuis la base de données
+                    $query = "SELECT ip, username, password FROM pis WHERE group_id = :group_id";
+                    $stmt = $pdo->prepare($query);
+                    $stmt->bindParam(":group_id", $groupId, PDO::PARAM_INT);
+
+                    if ($stmt->execute()) {
+                        // Boucle sur chaque Raspberry Pi du groupe
+                        while ($raspberryPiInfo = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            $ip = $raspberryPiInfo['ip'];
+                            $username = $raspberryPiInfo['username'];
+                            $password = $raspberryPiInfo['password'];
+
+                            // Connexion au serveur FTP du Raspberry Pi
+                            $conn_id = ftp_connect($ip);
+                            $login_result = ftp_login($conn_id, $username, $password);
+
+                            // Vérifier la connexion
+                            if (!$conn_id || !$login_result) {
+                                echo "Impossible de se connecter au serveur FTP du Raspberry Pi $ip.";
+                                continue; // Passer au Raspberry Pi suivant
+                            }
+
+                            // Transférer le fichier via FTP en écrasant les fichiers existants
+                            if (ftp_put($conn_id, "/home/pi/Videos/video.mp4", $targetFile, FTP_BINARY)) {
+                                echo "Le fichier a été transféré avec succès sur le Raspberry Pi $ip.";
+                            } else {
+                                echo "Erreur lors du transfert du fichier sur le Raspberry Pi $ip.";
+                            }
+
+                            // Fermer la connexion FTP
+                            ftp_close($conn_id);
+                        }
+                    }
+                } catch (PDOException $e) {
+                    echo "Erreur PDO : " . $e->getMessage();
+                }
+            }
         } else {
             echo "Une erreur est survenue lors du téléchargement de votre fichier.";
         }

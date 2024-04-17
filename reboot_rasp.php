@@ -21,7 +21,7 @@ $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db, 
 $raspberryPiIPs = [];
 $port = '22';
 $selectedGroups = isset($_POST["groupIDs"]) ? $_POST["groupIDs"] : [];
-var_dump($selectedGroups);
+//var_dump($selectedGroups);
 
 try {
     // Boucle sur chaque groupe sélectionné
@@ -46,11 +46,11 @@ try {
                     $stream = ssh2_exec($connection, '/home/pi/reboot.sh');
                     stream_set_blocking($stream, true);
                     $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
-                    $stream_out = stream_get_contents($stream_out);
+                    //$stream_out = stream_get_contents($stream_out);
 		    $msg = "Script de redémarrage exécuté sur $ip :\n";
                     include "modules/success.php";
                    // echo "Script de redémarrage exécuté sur $ip :\n";
-                    echo trim($stream_out) . "\n\n";
+                    //echo trim($stream_out) . "\n\n";
                     ssh2_disconnect($connection);
                 } else {
                     echo "Impossible de se connecter à $ip avec le nom d'utilisateur $username.\n";

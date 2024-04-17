@@ -1,4 +1,3 @@
-<!------------HEADER------------>
 <?php
 $pageTitle = "Configuration"; // Titre de la page
 $dropDownMenu = true;
@@ -14,9 +13,8 @@ include "../modules/header.php";
             <?php
             $msg = "";
 
-            try {
                 // Inclure le fichier de configuration de la base de données
-                require_once "./controller_config_files.php";
+                require_once "controller_config_files.php";
 
                 // Traitement des données du formulaire après la soumission
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -46,7 +44,7 @@ include "../modules/header.php";
                         $stmt1->execute();
                         $res1 = $stmt1->fetch(PDO::FETCH_ASSOC);
                         $news = $res1['infos'];
-                        $durationInSeconds = $res1['duration_seconds'];
+                        $durationIseconds = $res1['duration_seconds'];
 
                         // Ajouter un message supplémentaire pour indiquer que l'insertion a réussi
                         $msg .= "Informations insérées avec succès !<br>";
@@ -68,13 +66,13 @@ include "../modules/header.php";
                 $res2 = $stmt2->fetch(PDO::FETCH_ASSOC);
                 $nombre_iterations = $res2['nombre_de_liens'];
 
-                $compteur = 0; // Réinitialisation du compteur
+                $compteur = '$compteur'; // Réinitialisation du compteur
 
                 $static = <<<BASH
     #!/bin/bash
     # Compteur d'itérations
     compteur=0;
-    duree= $durationInSeconds;
+    duree=$durationInSeconds;
     # Fonction pour lancer Chromium
     lancer_chromium() {
         xset s noblank
@@ -87,6 +85,12 @@ include "../modules/header.php";
     fermer_onglets_chromium() {
         xdotool search --onlyvisible --class "chromium-browser" windowfocus key ctrl+shift+w
         wmctrl -k off
+    }
+
+    #Fonction pour arrêter Chromium
+    arreter_chromium() {
+    killall chromium-browser
+    #Ajoutez ici dutres commandes pour nettoyer l'environnement si nécessaire
     }
 
     # Lancer Chromium au début
@@ -105,22 +109,12 @@ include "../modules/header.php";
         ((compteur++))
 
         # Vérifie si le nombre d'itérations spécifié est atteint
-        #if [ "$compteur" -eq "$nombre_iterations" ]; then
+        if [ "$compteur" -eq "$nombre_iterations" ]; then
             # Arrêtez le processus Chromium
            # fermer_onglets_chromium
 
-            # Lancement de la vidéo avec VLC
-            #mpv --fs /home/pi/Videos/Gestes.mp4
-
-            # Relancer Chromium après que VLC ait terminé
-           # lancer_chromium
-
-            # Réinitialisez le compteur
-            #compteur=0
-        #fi
-    done
 BASH;
-                $nom = "MyfilesInfo"; // Définition de $nom avec une valeur par défaut si non défini
+
                 $file = $dir . $nom . ".sh";
 
                 // Liste des adresses IP des Raspberry Pi
@@ -128,19 +122,15 @@ BASH;
 
                 $selectedGroups = isset($_POST["group_id"]) ? $_POST["group_id"] : [];
 
-                // Vérifier si $selectedGroups est vide
-                if (empty($selectedGroups)) {
-                    throw new Exception("Aucun groupe sélectionné.");
-                }
+                try {
 
                 // Établir une connexion à la base de données
                 $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db, $dbuser, $dbpasswd);
 
-                // Établir une connexion à la base de données
                 // Boucle sur chaque groupe sélectionné
                 foreach ($selectedGroups as $groupId) {
                     // Récupérez les adresses IP, le nom d'utilisateur et le mot de passe des Raspberry Pi pour ce groupe depuis la base de données
-                    $query = "SELECT ip, username, password FROM pis WHERE group_id = :group_id";
+                    $query = "SELECT name, ip, username, password, video_acceptance FROM pis WHERE group_id = :group_id";
                     $stmt = $pdo->prepare($query);
                     $stmt->bindParam(":group_id", $groupId, PDO::PARAM_INT);
 
@@ -158,22 +148,54 @@ BASH;
                             $ip = $raspberryPiInfo['ip'];
                             $username = $raspberryPiInfo['username'];
                             $password = $raspberryPiInfo['password'];
+                            $video_acceptance = $raspberryPiInfo['video_acceptance'];
+                            $name = $raspberryPiInfo['name'];
 
                             $fichier = @fopen($file, 'w');
                             if ($fichier === false) {
                                 throw new Exception("Erreur lors de l'ouverture du fichier.");
                             }
                             fwrite($fichier, $static);
+                            if ($video_acceptance == 1) {
+                                fwrite($fichier, <<<BASH
+        #Lancement de la vidéo avec VLC
+        mpv --fs /home/pi/Videos/video.mp4
+        sleep 10
+        #Attendez que VLC se termine avant de réinitialiser le compteur
+BASH
+);
+        } else {
+                fwrite($fichier, <<<BASH
+                #Aucune vidéo à lancer car video_acceptance n'est pas égal à 1
+                #Relancer Chromium et réinitialiser le compteur
+BASH
+);
+                            }
+
+                            fwrite($fichier, <<<BASH
+
+        #Relancer Chromium après que VLC ait terminé
+        lancer_chromium
+
+        #Réinitialisez le compteur
+        compteur=0
+    fi
+done\n
+BASH
+);
+
                             fclose($fichier);
+
 
                             // Tentative de connexion au serveur FTP
                             // echo "Tentative de connexion au serveur FTP $ip<br>";
                             $identifiant_Srv = ftp_connect($ip) or die("could not connect to $ip");
 
                             if (@ftp_login($identifiant_Srv, $username, $password)) {
-                                $msg .= "Connecté en tant que $username@$ip <br>";
+                                $msg = "Connecté en tant que $name";
+                                include "../modules/success.php";
                             } else {
-                                throw new Exception("Connexion impossible en tant que $username");
+                                throw new Exception("Connexion impossible en tant que $name");
                             }
 
                             // Transfert du fichier
@@ -182,13 +204,14 @@ BASH;
                             ftp_close($identifiant_Srv);
 
                             // Exécution du script
-                            if (function_exists('ssh2_connect'))
-                                $connection = ssh2_connect($ip, $port);
-                            else
-                                throw new Exception("Impossible de se connecter à $ip avec le nom d'utilisateur $username.");
-
+                            $connection = ssh2_connect($ip, $port);
                             ssh2_auth_password($connection, $username, $password);
-                            $stream = ssh2_exec($connection, "/home/pi/time.sh $durationInSeconds");
+			    $ssh_command = "/home/pi/time.sh $durationInSeconds";
+                            echo "Commande SSH : $ssh_command <br>";
+
+			    $stream = ssh2_exec($connection, $ssh_command);
+
+//                            $stream = ssh2_exec($connection, "/home/pi/time.sh $durationInSeconds");
                             stream_set_blocking($stream, true);
                             $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
                             $stream_out = stream_get_contents($stream_out);
@@ -201,14 +224,13 @@ BASH;
                             ssh2_disconnect($connection);
                             unset($connection);
 
-                            $msg .= "Script de redémarrage exécuté avec succès sur $ip <br>";
-                            // include "./modules/success.php";
-                            // Si nous sommes arrivés ici, cela signifie qu'il n'y a pas eu d'erreurs.
-                            $msg .= "<br> Toutes les opérations ont été effectuées avec succès !";
-                            include "../modules/success.php";
+                            $msg = "Toutes les opérations ont été effectuées avec succès !";
+                            var_dump($durationInSeconds);
+			    include "../modules/success.php";
                         }
                     } else {
-                        throw new Exception("Erreur lors de l'exécution de la requête SQL : " . print_r($stmt->errorInfo(), true));
+                        $msg = "Erreur lors de l'exécution de la requête SQL : " . print_r($stmt->errorInfo(), true);
+                        include "../modules/error.php";
                     }
                 }
             } catch (PDOException $e) {

@@ -16,15 +16,15 @@ include "modules/header.php";
                     class="fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i>Retour</a>
 
 		<?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+//ini_set('display_errors', 1);
+//error_reporting(E_ALL);
 
 require_once "controllers/controller_config_files.php";
 $port = '22';
 $raspberryPiIPs = [];
 
 $selectedGroups = isset($_POST["groupIDs"]) ? $_POST["groupIDs"] : [];
-var_dump($selectedGroups);
+//var_dump($selectedGroups);
 
 try {
     // Établir une connexion à la base de données
@@ -45,7 +45,6 @@ try {
                 !$ip = $raspberryPiInfo['ip'];
                 $username = $raspberryPiInfo['username'];
                 $password = $raspberryPiInfo['password'];
-                var_dump($username);
 
                 // Exécution du script
                 $connection = ssh2_connect($ip, $port);
@@ -55,7 +54,6 @@ try {
                 $stream_out = ssh2_fetch_stream($stream, SSH2_STREAM_STDIO);
                 $stream_out = stream_get_contents($stream_out);
                 echo trim($stream_out);
-                var_dump($username);
                 ssh2_disconnect($connection);
                 unset($connection);
             }

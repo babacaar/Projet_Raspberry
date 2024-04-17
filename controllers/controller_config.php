@@ -33,7 +33,6 @@ include "../modules/header.php";
 					$Conf_date = date('y-m-d à H:i:s');
 					$msg .= $Conf_date;
 					//$Conf_date  = $_POST["Conf_date0"];
-			
 					if (empty($Conf_sites)) {
 						throw new Exception("Merci de remplir le champ");
 					}

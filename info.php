@@ -1,5 +1,6 @@
 <!------------HEADER------------>
 <?php
+require_once "/var/www/monsite.fr/verif_session.php";
 $pageTitle = "Formulaire d'Information"; // Titre de la page
 $dropDownMenu = true;
 include "modules/header.php";
@@ -10,7 +11,7 @@ include "modules/header.php";
 <body>
     <div class="info page">
         <section class="page-content">
-            <form method="post" action="controllers/controller_infos.php">
+            <form id="infoForm" method="post" action="controllers/controller_infos.php">
                 <h1>Informations</h1>
 
                 <hr />
@@ -59,24 +60,51 @@ include "modules/header.php";
 </body>
 
 <script>
-    function formatDuration(input) {
-        let inputValue = input.value.replace(/\D/g, ''); // Supprimez tous les caractères non numériques
-        let formattedValue = '';
+function formatDuration(input) {
+    let inputValue = input.value.replace(/\D/g, ''); // Supprimez tous les caractères non numériques
+    let hours = inputValue.substring(0, 2); // Obtenez les deux premiers chiffres pour les heures
+    let minutes = inputValue.substring(2, 4); // Obtenez les chiffres suivants pour les minutes
+    let seconds = inputValue.substring(4, 6); // Obtenez les chiffres suivants pour les secondes
 
-        if (inputValue.length > 2) {
-            formattedValue += inputValue.substring(0, 2) + ':';
-            inputValue = inputValue.substring(2);
+    // Limitez les heures à deux chiffres
+    hours = Math.min(parseInt(hours), 99).toString().padStart(2, '0');
+
+    // Formate la durée avec des deux-points
+    let formattedValue = hours + ':' + minutes + ':' + seconds;
+
+    input.value = formattedValue; // Met à jour la valeur du champ d'entrée
+}
+
+document.getElementById('infoForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Empêche l'envoi du formulaire par défaut
+
+    // Afficher un message de chargement ou une animation pour indiquer que le traitement est en cours
+
+    // Récupérer les données du formulaire
+    var formData = new FormData(this);
+
+    // Envoyer les données via AJAX
+    fetch(this.action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Gérer la réponse du serveur
+        if (data.success) {
+            // Afficher un message de succès à l'utilisateur
+            alert('Informations enregistrées avec succès !');
+        } else {
+            // Afficher un message d'erreur à l'utilisateur
+            alert('Erreur lors de l\'enregistrement des informations : ' + data.message);
         }
-
-        if (inputValue.length > 2) {
-            formattedValue += inputValue.substring(0, 2) + ':';
-            inputValue = inputValue.substring(2);
-        }
-
-        formattedValue += inputValue; // Ajoutez le reste de la saisie
-
-        input.value = formattedValue.substring(0, 8); // Limitez la longueur à 8 caractères (hh:mm:ss)
-    }
+    })
+    .catch(error => {
+        // Gérer les erreurs de la requête AJAX
+        console.error('Erreur AJAX:', error);
+        alert('Une erreur s\'est produite lors de l\'envoi du formulaire.');
+    });
+});
 </script>
 
 <!------------FOOTER------------>

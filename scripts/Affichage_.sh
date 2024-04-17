@@ -1,48 +1,52 @@
-    #!/bin/bash
-    # Compteur d'itérations
-    compteur=0;
-    duree= 3600;
-    # Fonction pour lancer Chromium
-    lancer_chromium() {
-        xset s noblank
-        xset s off
-        xset -dpms
-        unclutter -idle 1 -root &
-        /usr/bin/chromium-browser --kiosk --noerrdialogs https://affichage.lpjw.local/display_info.php https://affichage.lpjw.local/menu.jpg https://affichage.lpjw.local/meteotest.php http://lpjw.fr/ecrans/menu.jpg http://lpjw.fr https://affichage.lpjw.local/display_absences.php &
-    }
+#!/bin/bash
+#Compteur d'itérations
+compteur=0;
+#Fonction pour lancer Chromium
+lancer_chromium() {
+    xset s noblank
+    xset s off
+    xset -dpms
+    unclutter -idle 1 -root &
+ /usr/bin/chromium-browser --kiosk --noerrdialogs https://affichage.lpjw.local/display_absences.php https://affichage.lpjw.local/menupeda.jpg https://affichage.lpjw.local/menu.jpg &
+}
 
-    fermer_onglets_chromium() {
-        xdotool search --onlyvisible --class "chromium-browser" windowfocus key ctrl+shift+w
-        wmctrl -k off
-    }
+fermer_onglets_chromium() {
+    xdotool search --onlyvisible --class "chromium-browser" windowfocus key ctrl+shift+w
+    wmctrl -k off
+}
 
-    # Lancer Chromium au début
-    lancer_chromium
+#Fonction pour arrêter Chromium
+arreter_chromium() {
+    killall chromium-browser
+    #Ajoutez ici dutres commandes pour nettoyer l'environnement si nécessaire
+}
 
-    while true; do
-        xdotool keydown ctrl+Next
-        xdotool keyup ctrl+Next
+#Lancer Chromium au début
+lancer_chromium
 
-        xdotool keydown ctrl+r
-        xdotool keyup ctrl+r
+while true; do
+    xdotool keydown ctrl+Next
+    xdotool keyup ctrl+Next
 
-        sleep 15
+    xdotool keydown ctrl+r
+    xdotool keyup ctrl+r
 
-        # Incrémente le compteur d'itérations
-        ((compteur++))
+    sleep 15
 
-        # Vérifie si le nombre d'itérations spécifié est atteint
-        #if [ "0" -eq "6" ]; then
-            # Arrêtez le processus Chromium
-           # fermer_onglets_chromium
+    #Incrémente le compteur d'itérations
+    ((compteur++))
 
-            # Lancement de la vidéo avec VLC
-            #mpv --fs /home/pi/Videos/Gestes.mp4
+    #Vérifie si le nombre d'itérations spécifié est atteint
+    if [ "$compteur" -eq "3" ]; then
+        #Arrêtez le processus Chromium
+        #arreter_chromium
+        #fermer_onglets_chromium
+        	#Aucune vidéo à lancer car video_acceptance n'est pas égal à 1
+        	#Relancer Chromium et réinitialiser le compteur
+        #Relancer Chromium après que VLC ait terminé
+        lancer_chromium
 
-            # Relancer Chromium après que VLC ait terminé
-           # lancer_chromium
-
-            # Réinitialisez le compteur
-            #compteur=0
-        #fi
-    done
+        #Réinitialisez le compteur
+        compteur=0
+    fi
+done

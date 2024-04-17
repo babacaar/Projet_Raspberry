@@ -20,7 +20,7 @@ include "modules/header.php";
                 $existingGroup = isset($_POST['existing_group']) ? $_POST['existing_group'] : '';
 
                 // Validation des données (vous devrez peut-être effectuer une validation plus approfondie ici)
-            
+
                 // Mettre à jour la base de données avec les Raspberry Pi sélectionnés
                 try {
                     $conn = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db, $dbuser, $dbpasswd);

@@ -1,0 +1,111 @@
+<!------------HEADER------------>
+<?php
+$pageTitle = "Téléchargement"; // Titre de la page
+$dropDownMenu = true;
+include "../modules/header.php";
+?>
+
+<!------------BODY------------>
+
+<body>
+    <div class="page">
+        <section class="page-content">
+            <?php
+            error_reporting(E_ALL);
+            ini_set('display_errors', 1);
+
+
+            // Vérifier si le formulaire a été soumis et si un fichier a été téléchargé
+            if(isset($_POST["submit"]) && isset($_FILES["cerFile"])) {
+                $targetDir = "/var/www/monsite.fr/ca_certificates/";
+                $targetFile = $targetDir . basename($_FILES["cerFile"]["name"]);
+
+                // Vérifier si le fichier est un fichier .cer
+                $fileInfo = pathinfo($_FILES["cerFile"]["name"]);
+                if(strtolower($fileInfo["extension"]) !== "cer") {
+                    echo "Le fichier n'est pas un fichier .cer.";
+                    exit;
+                }
+
+                // Afficher les éventuelles erreurs lors du téléchargement
+                if ($_FILES["cerFile"]["error"] > 0) {
+                    $msg = "Erreur de téléchargement : " . $_FILES["cerFile"]["error"];
+                    include "./modules/error.php";
+                } else {
+                    // Si tout est OK, essayez de télécharger le fichier en écrasant les fichiers existants
+                    if (move_uploaded_file($_FILES["cerFile"]["tmp_name"], $targetFile)) {
+                        echo "Le fichier .cer a été téléchargé avec succès.";
+
+                        // Récupérer les données du formulaire
+                        $raspberryIP = $_POST['raspberryIP'];
+                        $username = $_POST['username'];
+                        $password = $_POST['password'];
+
+                        // Connexion SSH au Raspberry Pi
+                        $connection = ssh2_connect($raspberryIP, 22);
+                        if (!$connection) {
+                            echo "Impossible de se connecter au Raspberry Pi.";
+                            exit;
+                        }
+
+                        // Authentification SSH avec nom d'utilisateur et mot de passe
+                        if (!ssh2_auth_password($connection, $username, $password)) {
+                            echo "L'authentification SSH a échoué.";
+                            exit;
+                        }
+
+                        // Commande scp pour transférer le fichier sur le Raspberry Pi
+                        $scpCommand = 'scp ' . escapeshellarg($targetFile) . ' ' . $username . '@' . $raspberryIP . ':/home/pi/ca_certificates/';
+
+                        // Exécuter la commande scp
+                        $stream = ssh2_exec($connection, $scpCommand);
+                        stream_set_blocking($stream, true);
+
+                        // Vérifier si le transfert a réussi
+                        if($stream !== false) {
+                            $msg = "Le fichier .cer a été téléchargé avec succès sur le Raspberry Pi.";
+                            include "../modules/success.php";
+
+                            // Ajout des commandes certutil
+                            $command1 = 'certutil -d sql:$HOME/.pki/nssdb -L';
+                            $stream1 = ssh2_exec($connection, $command1);
+                            stream_set_blocking($stream1, true);
+                            $output1 = stream_get_contents($stream1);
+
+                            $command2 = 'certutil -d sql:$HOME/.pki/nssdb -A -t "CT,C,C" -n "joseph-SRVADCS01-CA - wresinski " -i /home/pi/ca_certificates/' . basename($targetFile);
+                            $stream2 = ssh2_exec($connection, $command2);
+                            stream_set_blocking($stream2, true);
+                            $output2 = stream_get_contents($stream2);
+
+                            // Vérification de l'exécution des commandes certutil
+                            if(strpos($output1, 'Certificate Nickname') !== false && strpos($output2, 'successful') !== false) {
+                                $msg = "Les commandes certutil ont été exécutées avec succès.";
+                                include "../modules/success.php";
+                            } else {
+                                $msg = "Une erreur s'est produite lors de l'exécution des commandes certutil.";
+                                include "../modules/error.php";
+                            }
+                        } else {
+                            $msg = "Une erreur s'est produite lors du téléchargement du fichier.";
+                            include "../modules/error.php";
+                        }
+                    } else {
+                        $msg = "Une erreur est survenue lors du téléchargement du fichier .cer.";
+                        include "../modules/error.php";
+                    }
+                }
+            } else {
+                $msg = "Aucun fichier n'a été téléchargé.";
+                include "../modules/error.php";
+            }
+            ?>
+            <!-- <a tabindex="0" href="<?php echo $_SERVER['HTTP_REFERER']; ?>" class="back-btn"><i
+            class="fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i>Retour</a> -->
+
+        </section>
+    </div>
+
+</body>
+
+<!------------FOOTER------------>
+<?php include "../modules/footer.php"; ?>

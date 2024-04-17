@@ -32,17 +32,17 @@
         ((compteur++))
 
         # Vérifie si le nombre d'itérations spécifié est atteint
-        if [ "0" -eq "4" ]; then
+        #if [ "0" -eq "4" ]; then
             # Arrêtez le processus Chromium
-            fermer_onglets_chromium
+            #fermer_onglets_chromium
 
             # Lancement de la vidéo avec VLC
-            mpv --fs /home/pi/Videos/Gestes.mp4
+           # mpv --fs /home/pi/Videos/Gestes.mp4
 
             # Relancer Chromium après que VLC ait terminé
-            lancer_chromium
+            #lancer_chromium
 
             # Réinitialisez le compteur
-            compteur=0
-        fi
+            #compteur=0
+        #fi
     done
