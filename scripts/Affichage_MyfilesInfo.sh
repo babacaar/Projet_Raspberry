@@ -1,7 +1,7 @@
     #!/bin/bash
     # Compteur d'itérations
     compteur=0;
-    duree=179;
+    duree=300;
     # Fonction pour lancer Chromium
     lancer_chromium() {
         xset s noblank
@@ -33,14 +33,15 @@
         xdotool keyup ctrl+r
 
         sleep 15
+   #Incrémente le compteur d'itérations
+    ((compteur++))
 
-        # Incrémente le compteur d'itérations
-        ((compteur++))
+    #Vérifie si le nombre d'itérations spécifié est atteint
+    if [ "$compteur" -eq "4" ]; then
+        #Arrêtez le processus Chromium
+        #arreter_chromium
+        fermer_onglets_chromium
 
-        # Vérifie si le nombre d'itérations spécifié est atteint
-        if [ "0" -eq "4" ]; then
-            # Arrêtez le processus Chromium
-           # fermer_onglets_chromium
         #Lancement de la vidéo avec VLC
         mpv --fs /home/pi/Videos/video.mp4
         sleep 10
@@ -52,3 +53,4 @@
         compteur=0
     fi
 done
+

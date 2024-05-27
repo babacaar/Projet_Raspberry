@@ -12,7 +12,8 @@
                 title="Permet de configurer les hôtes et groupes d'hôtes">Hôtes/Groupes</a>
             <a tabindex="0" href='<?php echo $siteUrl . "/info.php" ?>'
                 title="Permet d'ajouter une information ponctuelle à afficher">Informations Ponctuelles</a>
-            <!-------a tabindex="0" href='<?php echo $siteUrl . "/upload_video.php" ?>'  title="Permet d'ajouter des vidéos"-----><!---/a--->
+            <a tabindex="0" href='<?php echo $siteUrl . "/vue_des_liens.php" ?>'
+                title="Permet de voir l'affichage de base ">Configuration de base</a>
             <a tabindex="0" href='<?php echo $siteUrl . "/custom_style.php" ?>'
                 title="Permet de modifier le style du site"><i class="fa-solid fa-paintbrush"></i> Style</a>
 	    <a tabindex="0" class="link-btn" href='<?php echo $siteUrl."/configMenu.php" ?>'

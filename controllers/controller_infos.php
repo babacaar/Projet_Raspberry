@@ -105,14 +105,6 @@ include "../modules/header.php";
 
         sleep 15
 
-        # Incrémente le compteur d'itérations
-        ((compteur++))
-
-        # Vérifie si le nombre d'itérations spécifié est atteint
-        if [ "$compteur" -eq "$nombre_iterations" ]; then
-            # Arrêtez le processus Chromium
-           # fermer_onglets_chromium
-
 BASH;
 
                 $file = $dir . $nom . ".sh";
@@ -158,10 +150,27 @@ BASH;
                             fwrite($fichier, $static);
                             if ($video_acceptance == 1) {
                                 fwrite($fichier, <<<BASH
+   #Incrémente le compteur d'itérations
+    ((compteur++))
+
+    #Vérifie si le nombre d'itérations spécifié est atteint
+    if [ "$compteur" -eq "$nombre_iterations" ]; then
+        #Arrêtez le processus Chromium
+        #arreter_chromium
+        fermer_onglets_chromium
+
         #Lancement de la vidéo avec VLC
         mpv --fs /home/pi/Videos/video.mp4
         sleep 10
         #Attendez que VLC se termine avant de réinitialiser le compteur
+        #Relancer Chromium après que VLC ait terminé
+        lancer_chromium
+
+        #Réinitialisez le compteur
+        compteur=0
+    fi
+done\n
+
 BASH
 );
         } else {
@@ -172,17 +181,6 @@ BASH
 );
                             }
 
-                            fwrite($fichier, <<<BASH
-
-        #Relancer Chromium après que VLC ait terminé
-        lancer_chromium
-
-        #Réinitialisez le compteur
-        compteur=0
-    fi
-done\n
-BASH
-);
 
                             fclose($fichier);
 

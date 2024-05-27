@@ -8,8 +8,9 @@ include "./modules/header.php";
 <?php
 require_once "controllers/controller_config_files.php";
 $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
-$stmt1 = $pdo->prepare("SELECT * FROM `absence` ORDER BY fin_absence DESC LIMIT 8");
-$stmt1->bindParam(1, $id);
+$stmt1 = $pdo->prepare("SELECT * FROM `absence` ORDER BY fin_absence DESC, nom ASC LIMIT 8");
+//$stmt1->bindValue(':id', $id);
+//$stmt1->bindParam(1, $id);
 $stmt1->execute();
 $res1 = $stmt1->fetchall();
 
@@ -206,9 +207,14 @@ function displayEvents($events)
                             $motif = $row1['motif'];
                             $dateDebut = date('d/m/Y', strtotime($row1['debut_absence']));
                             $dateFin = date('d/m/Y', strtotime($row1['fin_absence']));
-                            //$idLieu = $row1['idLieu'];
+                            // Conversion des dates de début et de fin en timestamp
+                            $dateFinTimestamp = strtotime($row1['fin_absence']);
+                            $dateActuelle = strtotime(date('Y-m-d')); // Date actuelle
 
-                            echo "<tr><td>" . $name . " " . $fname . "<td>" . $motif . "<td>" . $dateDebut . "<td>" . $dateFin . "</tr>";
+                            // Vérifie si la date de fin est postérieure à la date actuelle
+                            if ($dateFinTimestamp >= $dateActuelle) {
+                                echo "<tr><td>" . $name . " " . $fname . "<td>" . $motif . "<td>" . $dateDebut . "<td>" . $dateFin . "</tr>";
+                            }
                         }
                         ?>
                     </table>

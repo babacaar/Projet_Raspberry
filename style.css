@@ -671,6 +671,12 @@ label {
   margin-left: 20px;
 }
 
+.absence-menu {
+  display: block;
+  height: auto;
+  margin-left: 10px;
+}
+
 .list-menu:last-child {
   position: absolute;
   margin-left: 145px;

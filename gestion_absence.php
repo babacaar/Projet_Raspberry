@@ -1,5 +1,6 @@
 <!------------HEADER------------>
 <?php
+require_once "/var/www/monsite.fr/verif_session.php";
 $pageTitle = "Gestion des Absences"; // Titre de la page
 $dropDownMenu = true;
 include "modules/header.php";
@@ -9,6 +10,7 @@ include "modules/header.php";
 
 <body>
   <div class="gestion page">
+     <?php include "modules/absences_menu.php"; ?>
     <section class="page-content">
 
       <div class="container">

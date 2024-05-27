@@ -118,7 +118,7 @@ BASH;
     if [ "$compteur" -eq "$nombre_iterations" ]; then
         #Arrêtez le processus Chromium
         #arreter_chromium
-        fermer_onglets_chromium
+        #fermer_onglets_chromium
 
         #Lancement de la vidéo avec VLC
   	mpv --fs /home/pi/Videos/video.mp4

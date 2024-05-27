@@ -1,5 +1,6 @@
 <!------------HEADER------------>
 <?php
+require_once "/var/www/monsite.fr/verif_session.php";
 $pageTitle = "Configuration des écrans"; // Titre de la page
 $dropDownMenu = true;
 include "modules/header.php";
@@ -27,7 +28,7 @@ include "modules/header.php";
         require_once "controllers/controller_config_files.php";
         $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
         $stmt1 = $pdo->prepare("SELECT * FROM `configuration` ORDER BY Conf_id DESC LIMIT 1");
-        $stmt1->bindParam(1, $id);
+        //$stmt1->bindParam(1, $id);
         $stmt1->execute();
         $res1 = $stmt1->fetchall();
         foreach ($res1 as $row1) {
@@ -46,7 +47,7 @@ include "modules/header.php";
                 require_once "controllers/controller_config_files.php";
                 $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
                 $stmt0 = $pdo->prepare("SELECT * FROM `configuration` ORDER BY Conf_id DESC LIMIT 3");
-                $stmt0->bindParam(1, $id);
+                //$stmt0->bindParam(1, $id);
                 $stmt0->execute();
                 $res0 = $stmt0->fetchall();
                 foreach ($res0 as $row0) {

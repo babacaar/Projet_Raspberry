@@ -1,5 +1,6 @@
 <!------------HEADER------------>
 <?php
+require_once "/var/www/monsite.fr/verif_session.php";
 $pageTitle = "Gestion des Groupes"; // Titre de la page
 $dropDownMenu = true;
 include "modules/header.php";
@@ -40,7 +41,7 @@ include "modules/header.php";
                         foreach ($rows as $row) {
                             $group_id = $row['group_id'];
                             $data_group_id = ($group_id === null) ? 'null' : $group_id;
-                            echo '<option data-group_id="' . $data_group_id . '" value="' . $row['ip'] . '">' . $row['name'] . ' - ' . $row['ip'] . '</option>';
+                            echo '<option data-group_id="' . $data_group_id . '" value="' . $row['ip'] . '">' . $row['name'] .'</option>';
                         }
                     } else {
                         echo '<option disabled selected>Pas d\'hôte disponible...</option>';
@@ -254,7 +255,7 @@ include "modules/header.php";
                     var ul = document.createElement('ul');
                     for (var i = 0; i < piDetails.length; i++) {
                         var li = document.createElement('li');
-                        li.textContent = piDetails[i].name + ' - ' + piDetails[i].ip;
+                        li.textContent = piDetails[i].name;
                         ul.appendChild(li);
                     }
 

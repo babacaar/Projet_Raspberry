@@ -32,7 +32,25 @@ while true; do
     xdotool keyup ctrl+r
 
     sleep 15
-        	#Aucune vidéo à lancer car video_acceptance n'est pas égal à 1
-        	#Relancer Chromium et réinitialiser le compteur
 
+        #Incrémente le compteur d'itérations
+    ((compteur++))
+
+    #Vérifie si le nombre d'itérations spécifié est atteint
+    if [ "$compteur" -eq "3" ]; then
+        #Arrêtez le processus Chromium
+        #arreter_chromium
+        #fermer_onglets_chromium
+
+        #Lancement de la vidéo avec VLC
+  	mpv --fs /home/pi/Videos/video.mp4
+	#sleep 10
+        #Attendez que VLC se termine avant de réinitialiser le compteur
+        #Relancer Chromium après que VLC ait terminé
+        lancer_chromium
+
+        #Réinitialisez le compteur
+        compteur=0
+    fi
 done
+
