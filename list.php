@@ -1,33 +1,17 @@
-<!------------HEADER------------>
 <?php
 require_once 'verif_session.php';
 require_once 'Fonctions/fonction.php';
 
-//var_dump($user_id);
-//var_dump($role_id);
-//if (!checkPermission($role_id, $page, $pdo)) {
-        // Redirection vers une page d'erreur d'autorisation
-  //  header("Location: 403error.php");
-    //exit(); // Arrêt de l'exécution du script pour éviter tout accès non autorisé
-//}
-
-
-$pageTitle = "Liste des Rasperrys Pi"; // Titre de la page
+$pageTitle = "Liste des Rasperrys Pi";
 $dropDownMenu = true;
 include "modules/header.php";
 ?>
-<!------------BODY------------>
-
-
 <body>
     <div class="list page">
-
         <?php include "modules/list_menu.php"; ?>
-
         <section class="page-content">
             <h1>Liste des Hôtes</h1>
             <hr>
-
             <label for="target_pis">Hôtes cibles</label>
             <select id="target_pis" name="target_pis[]" multiple>
                 <?php
@@ -35,13 +19,11 @@ include "modules/header.php";
                 try {
                     $conn = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
                     $stmt = $conn->query('SELECT * FROM pis');
-                    $rows = $stmt->fetchAll();
-
+                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     if (count($rows) > 0) {
                         foreach ($rows as $row) {
-                            echo '<option value="' . $row['ip'] . '">' . $row['name'] . ' - ' . $row['ip'] . '</option>';
+                            echo '<option value="' . $row['id'] . '">' . $row['name'] . ' - ' . $row['ip'] . '</option>';
                         }
                     } else {
                         echo '<option disabled selected>Pas d\'hôte disponible...</option>';
@@ -51,90 +33,42 @@ include "modules/header.php";
                 }
                 ?>
             </select>
-
             <?php
-            require_once "controllers/controller_config_files.php";
-
-            $db = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
-            // Récupérer tous les groupes depuis la table "groups"
+            // Récupérer tous les groupes depuis la table "groupes"
             $query = "SELECT id, name FROM groupes";
-            $stmt = $db->prepare($query);
+            $stmt = $conn->prepare($query);
             $stmt->execute();
             $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            // Traitement du formulaire
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                // Récupérer le groupe sélectionné
-                $selectedGroupId = $_POST['group_id'];
-
-                // Mettre à jour la base de données avec le nouveau groupe sélectionné
-                $query = "UPDATE pis SET group_id = :group_id";
-                $stmt = $db->prepare($query);
-                $stmt->bindParam(':group_id', $selectedGroupId);
-                $stmt->execute();
-
-                // Rediriger vers la page de configuration pour éviter la soumission du formulaire à nouveau en actualisant la page
-                // header("Location: list.php");
-
-                die();
-            }
             ?>
-
             <div class="selected-group">
-
                 <form method="post" action="update_table.php">
-
-                    <label for="group_id">Sélectionner un groupe</label>
-                    <select class="gid" name="group_id" id="groupid">
-                        <option value="">Sélectionner un groupe</option>
+                    <label for="group_id">Sélectionner des groupes</label>
+                    <select class="gid" name="group_id[]" id="groupid" multiple>
                         <?php foreach ($groups as $group): ?>
                             <option value="<?php echo $group['id']; ?>">
                                 <?php echo $group['name']; ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
-
                     <input type="hidden" name="selected_pis" id="selected_pis" value="">
                     <input type="hidden" name="existing_group" id="existing_group" value="">
                     <button tabindex="0" type="submit" class="submit-btn">Ajouter</button>
-
                 </form>
             </div>
-
         </section>
     </div>
-
     <script>
-        var existingGroup; // Déclarez existingGroup ici
-
-        function addToGroup() {
-            var targetPis = document.getElementById("target_pis");
-            var selectedPis = Array.from(targetPis.selectedOptions).map(option => option.value);
-
-            existingGroup = document.getElementById("existing_group").value; // Obtenez la valeur de l'élément HTML ici
-
-            // Envoyer les données au serveur via une requête AJAX ou un formulaire
-            alert("Ajout de ces Hôtes (" + selectedPis.join(', ') + ") au groupe " + existingGroup);
-        }
-
-        document.getElementById("target_pis").addEventListener("change", function () {
-            var selectedPis = document.getElementById("target_pis").selectedOptions;
-            var selectedGroup = document.querySelector(".selected-group");
-
-            selectedGroup.style.display = selectedPis.length > 0 ? "block" : "none";
-
-        });
-
-
         document.getElementById("target_pis").addEventListener("change", function () {
             var selectedPis = Array.from(this.selectedOptions).map(option => option.value);
             document.getElementById("selected_pis").value = selectedPis.join(',');
+            var selectedGroup = document.querySelector(".selected-group");
+            selectedGroup.style.display = selectedPis.length > 0 ? "block" : "none";
         });
 
         document.getElementById("groupid").addEventListener("change", function () {
-            document.getElementById("existing_group").value = this.value;
+            var selectedGroups = Array.from(this.selectedOptions).map(option => option.value);
+            document.getElementById("existing_group").value = selectedGroups.join(',');
         });
     </script>
-
-    <!------------FOOTER------------>
     <?php include "modules/footer.php"; ?>
+</body>

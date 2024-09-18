@@ -5,9 +5,8 @@ compteur=0;
 lancer_chromium() {
     xset s noblank
     xset s off
-    xset -dpms
     unclutter -idle 1 -root &
- /usr/bin/chromium-browser --kiosk --noerrdialogs https://affichage.lpjw.local/display_absences.php https://affichage.lpjw.local/menupeda.jpg https://affichage.lpjw.local/menu.jpg &
+ /usr/bin/chromium-browser --kiosk --noerrdialogs https://affichage.lpjw.local/display_absences.php https://affichage.lpjw.local/menu.jpg &
 }
 
 fermer_onglets_chromium() {
@@ -37,7 +36,7 @@ while true; do
     ((compteur++))
 
     #Vérifie si le nombre d'itérations spécifié est atteint
-    if [ "$compteur" -eq "3" ]; then
+    if [ "$compteur" -eq "2" ]; then
         #Arrêtez le processus Chromium
         #arreter_chromium
         #fermer_onglets_chromium

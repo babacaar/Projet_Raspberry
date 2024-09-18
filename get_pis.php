@@ -11,7 +11,10 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["group_id"])) {
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Effectuer une requête SQL pour récupérer les Raspberry Pi du groupe en fonction de l'ID du groupe
-        $sql = "SELECT name, ip FROM pis WHERE group_id = :group_id";
+        $sql = "SELECT pis.name, pis.ip   
+                FROM pis 
+                INNER JOIN pis_groups ON pis.id = pis_groups.pi_id 
+                WHERE pis_groups.group_id = :group_id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':group_id', $group_id, PDO::PARAM_INT);
         $stmt->execute();

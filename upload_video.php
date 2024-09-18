@@ -69,9 +69,9 @@ include "modules/header.php";
                             $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db, $dbuser, $dbpasswd);
 
                             // Préparer et exécuter une requête SQL pour récupérer les données des groupes
-                            $query = "SELECT groupes.id, groupes.name, COUNT(pis.ip) AS membres
+                            $query = "SELECT groupes.id, groupes.name, COUNT(pis_groups.pi_id) AS membres
                                     FROM groupes
-                                    LEFT JOIN pis ON groupes.id = pis.group_id
+                                    LEFT JOIN pis_groups ON groupes.id = pis_groups.group_id
                                     GROUP BY groupes.id, groupes.name";
 
                             $stmt = $pdo->query($query);

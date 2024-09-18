@@ -37,7 +37,6 @@ compteur=0;
 lancer_chromium() {
     xset s noblank
     xset s off
-    xset -dpms
     unclutter -idle 1 -root &
  /usr/bin/chromium-browser --kiosk --noerrdialogs $link &
 }
@@ -81,7 +80,10 @@ BASH;
                 // Boucle sur chaque groupe sélectionné
                 foreach ($selectedGroups as $groupId) {
                     // Récupérez les adresses IP, username et password des Raspberry Pi pour ce groupe depuis la base de données
-                    $query = "SELECT name, ip, username, password, video_acceptance FROM pis WHERE group_id = :group_id";
+                    $query = "SELECT p.ip, p.username, p.password, p.name, p.video_acceptance 
+                                FROM pis p
+                                JOIN pis_groups pg ON p.id = pi_id
+                                WHERE pg.group_id = :group_id";
                     $stmt = $pdo->prepare($query);
                     $stmt->bindParam(":group_id", $groupId, PDO::PARAM_INT);
 
@@ -100,7 +102,7 @@ BASH;
                             $username = $raspberryPiInfo['username'];
                             $password = $raspberryPiInfo['password'];
                             $video_acceptance = $raspberryPiInfo['video_acceptance'];
-			    $name = $raspberryPiInfo['name'];
+			                      $name = $raspberryPiInfo['name'];
 
                             $fichier = @fopen($file, 'w');
                             if ($fichier === false) {
