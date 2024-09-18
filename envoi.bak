@@ -65,31 +65,9 @@ while true; do
 
     sleep 15
 
-    #Incrémente le compteur d'itérations
-    ((compteur++))
-
-    #Vérifie si le nombre d'itérations spécifié est atteint
-    if [ "$compteur" -eq "$nombre_iterations" ]; then
-        Arrêtez le processus Chromium
-        arreter_chromium
-	fermer_onglets_chromium
-
-        Lancement de la vidéo avec VLC
-        mpv --fs /home/pi/Videos/Gestes.mp4
-        sleep 10
-        Attendez que VLC se termine avant de réinitialiser le compteur
-
-
-        Relancer Chromium après que VLC ait terminé
-        lancer_chromium
-
-        Réinitialisez le compteur
-	compteur=0
-    fi
-done\n
 BASH;
 
-            $file = $dir . $name . ".sh";
+            $file = $dir . $names . ".sh";
             // var_dump($file);
             // Liste des adresses IP des Raspberry Pi
             $raspberryPiIPs = [];
@@ -103,7 +81,10 @@ BASH;
                 // Boucle sur chaque groupe sélectionné
                 foreach ($selectedGroups as $groupId) {
                     // Récupérez les adresses IP, username et password des Raspberry Pi pour ce groupe depuis la base de données
-                    $query = "SELECT ip, username, password FROM pis WHERE group_id = :group_id";
+                    $query = "SELECT p.ip, p.username, p.password, p.name, p.video_acceptance 
+                                FROM pis p
+                                JOIN pis_groups pg ON p.id = pi_id
+                                WHERE pg.group_id = :group_id";
                     $stmt = $pdo->prepare($query);
                     $stmt->bindParam(":group_id", $groupId, PDO::PARAM_INT);
 
@@ -121,29 +102,80 @@ BASH;
                             $ip = $raspberryPiInfo['ip'];
                             $username = $raspberryPiInfo['username'];
                             $password = $raspberryPiInfo['password'];
+                            $video_acceptance = $raspberryPiInfo['video_acceptance'];
+			                      $name = $raspberryPiInfo['name'];
 
                             $fichier = @fopen($file, 'w');
                             if ($fichier === false) {
                                 throw new Exception("Erreur lors de l'ouverture du fichier.");
                             }
                             fwrite($fichier, $static);
+
+                            if ($video_acceptance == 1) {
+                                fwrite($fichier, <<<BASH
+
+        #Incrémente le compteur d'itérations
+    ((compteur++))
+
+    #Vérifie si le nombre d'itérations spécifié est atteint
+    if [ "$compteur" -eq "$nombre_iterations" ]; then
+        #Arrêtez le processus Chromium
+        #arreter_chromium
+        #fermer_onglets_chromium
+
+        #Lancement de la vidéo avec VLC
+  	mpv --fs /home/pi/Videos/video.mp4
+	#sleep 10
+        #Attendez que VLC se termine avant de réinitialiser le compteur
+        #Relancer Chromium après que VLC ait terminé
+        lancer_chromium
+
+        #Réinitialisez le compteur
+        compteur=0
+    fi
+done\n
+
+BASH
+);
+	} else {
+    		fwrite($fichier, <<<BASH
+        	#Aucune vidéo à lancer car video_acceptance n'est pas égal à 1
+        	#Relancer Chromium et réinitialiser le compteur
+
+done\n
+BASH
+);
+			    }
+
+                           // fwrite($fichier, <<<BASH
+
+        //#Relancer Chromium après que VLC ait terminé
+        //lancer_chromium
+
+        //#Réinitialisez le compteur
+        //compteur=0
+    //fi
+//done\n
+//BASH
+//);
+
                             fclose($fichier);
 
 
                             // Tentative de connexion au serveur FTP
-                            echo "Tentative de connexion au serveur FTP $ip\n";
+                            //echo "Tentative de connexion au serveur FTP $ip\n";
                             $identifiant_Srv = ftp_connect($ip) or die("could not connect to $ip");
 
                             if (@ftp_login($identifiant_Srv, $username, $password)) {
-                                $msg = "Connecté en tant que $username@$ip";
+                                $msg = "Connecté en tant que $name";
                                 include "./modules/success.php";
 
                             } else {
-                                throw new Exception("Connexion impossible en tant que $username");
+                                throw new Exception("Connexion impossible en tant que $name");
                             }
                             // var_dump($username);
                             // Transfert du fichier
-                            $remote_file = $name;
+                            $remote_file = $names;
                             ftp_put($identifiant_Srv, $remote_file, $file, FTP_ASCII);
                             ftp_close($identifiant_Srv);
 
