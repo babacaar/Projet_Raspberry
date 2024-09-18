@@ -1,5 +1,6 @@
 <!------------HEADER------------>
 <?php
+require_once "/var/www/monsite.fr/verif_session.php";
 $pageTitle = "Gestion des Groupes"; // Titre de la page
 $dropDownMenu = true;
 include "modules/header.php";
@@ -40,7 +41,7 @@ include "modules/header.php";
                         foreach ($rows as $row) {
                             $group_id = $row['group_id'];
                             $data_group_id = ($group_id === null) ? 'null' : $group_id;
-                            echo '<option data-group_id="' . $data_group_id . '" value="' . $row['ip'] . '">' . $row['name'] . ' - ' . $row['ip'] . '</option>';
+                            echo '<option data-group_id="' . $data_group_id . '" value="' . $row['ip'] . '">' . $row['name'] .'</option>';
                         }
                     } else {
                         echo '<option disabled selected>Pas d\'hôte disponible...</option>';
@@ -103,9 +104,9 @@ include "modules/header.php";
                     <button tabindex="0" id="delete-button" tabindex="0" title="Supprimer les groupes sélectionnés"><i
                             class="fa-solid fa-trash"></i>Supprimer</button>
                     <button tabindex="0" id="push-file-button" tabindex="0" title="Ajouter les fichiers à l'hôte sélectionné"><i
-                            class="fa-solid fa-circle-plus"></i>Ajouter</button>
+                            class="fa-solid fa-rotate-right"></i>Rafraichir</button>
                     <button tabindex="0" id="reboot-button" tabindex="0" title="Redémarrer les hôtes"><i
-                            class="fa-solid fa-rotate-right"></i>Redémarrer</button>
+                            class="fa-solid fa-power-off"></i>Redémarrer</button>
 
                     <div class="alert-menu-container">
                         <div class="alert-menu">
@@ -254,7 +255,7 @@ include "modules/header.php";
                     var ul = document.createElement('ul');
                     for (var i = 0; i < piDetails.length; i++) {
                         var li = document.createElement('li');
-                        li.textContent = piDetails[i].name + ' - ' + piDetails[i].ip;
+                        li.textContent = piDetails[i].name;
                         ul.appendChild(li);
                     }
 

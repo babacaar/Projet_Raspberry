@@ -29,10 +29,10 @@ include "modules/header.php";
 
       // Utilisez ici une API pour la voix off, par exemple l'API Web Speech
       // Assurez-vous de vérifier la compatibilité du navigateur avec l'API Web Speech
-      // if ("speechSynthesis" in window) {
-      //   var msg = new SpeechSynthesisUtterance(message);
-      //   window.speechSynthesis.speak(msg);
-      // }
+       //if ("speechSynthesis" in window) {
+         //var msg = new SpeechSynthesisUtterance(message);
+         //window.speechSynthesis.speak(msg);
+       //}
     }
 
     // Exemple d'utilisation : Afficher une alerte incendie

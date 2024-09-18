@@ -1,7 +1,10 @@
 <!------------HEADER------------>
 <?php
+require_once "/var/www/monsite.fr/verif_session.php";
+
 $pageTitle = "Menu"; // Titre de la page
 $dropDownMenu = false;
+include "modules/header_settings.php";
 include "modules/header.php";
 ?>
 
@@ -12,7 +15,7 @@ include "modules/header.php";
         <section class="page-content">
             <div class="menu-container">
 
-                <h1>Menu</h1>
+                <h1>Tableau de bord</h1>
                 <hr>
 
                 <a tabindex="0" class="link-btn" href='<?php echo $siteUrl."/configuration.php" ?>'>Affichage

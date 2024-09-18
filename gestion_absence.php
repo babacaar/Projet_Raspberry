@@ -1,5 +1,6 @@
 <!------------HEADER------------>
 <?php
+require_once "/var/www/monsite.fr/verif_session.php";
 $pageTitle = "Gestion des Absences"; // Titre de la page
 $dropDownMenu = true;
 include "modules/header.php";
@@ -9,6 +10,7 @@ include "modules/header.php";
 
 <body>
   <div class="gestion page">
+     <?php include "modules/absences_menu.php"; ?>
     <section class="page-content">
 
       <div class="container">
@@ -23,7 +25,13 @@ include "modules/header.php";
           <input type="text" class="form-control" name="prenom" required style="text-transform: capitalize;">
 
           <label for="motif">Motif <span class="required">*</span></label>
-          <input type="text" class="form-control" name="motif" required maxlength="50">
+         <select name="motif" class="form-control" required>
+  	  <option value="Maladie">Maladie</option>
+  	  <option value="Enfant malade">Enfant malade</option>
+  	  <option value="Personnel">Personnel</option>
+  	  <option value="Formation">Formation</option>
+  	  <option value="Convocation">Convocation</option>
+	  </select>
 
           <label for="commentaire">Commentaire</label>
           <input type="text" class="form-control" name="commentaire" maxlength="100">

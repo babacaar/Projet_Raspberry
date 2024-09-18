@@ -20,7 +20,7 @@ $dbpasswd = "Koxo@361428";
 
 */
 // NAME servira de nom au fichier texte crée
-$name = "Myfiles";
+$names = "Myfiles";
 $nom ="MyfilesInfo";
 
 //EMPLACEMENT DU FICHIER DANS LE RASP
@@ -29,6 +29,6 @@ $dir = "/var/www/monsite.fr/scripts/Affichage_";
 
 
 //CREATION DU FICHIER DANS LE RASP
-$fichier1 = fopen($name, 'c+b');
+$fichier1 = fopen($names, 'c+b');
 
 ?>

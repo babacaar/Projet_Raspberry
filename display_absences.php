@@ -8,21 +8,30 @@ include "./modules/header.php";
 <?php
 require_once "controllers/controller_config_files.php";
 $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
-$stmt1 = $pdo->prepare("SELECT * FROM `absence` ORDER BY fin_absence DESC LIMIT 8");
-$stmt1->bindParam(1, $id);
+$stmt1 = $pdo->prepare("SELECT * FROM `absence` ORDER BY fin_absence DESC, nom ASC LIMIT 8");
+//$stmt1->bindValue(':id', $id);
+//$stmt1->bindParam(1, $id);
 $stmt1->execute();
 $res1 = $stmt1->fetchall();
 
+
+$statement = $pdo->prepare("SELECT url, agendaType FROM `agenda`");
+$statement->execute();
+$agendaFile = $statement->fetch(PDO::FETCH_ASSOC);
+
+$iCalFile = $agendaFile['url'];
+$iCalType = $agendaFile['agendaType'];
 // Nom du fichier iCal à lire
-$iCalFile = "testest.ics";
-//var_dump($iCalFile);
+//$iCalFile = 'google.ics';
+//$iCalFile = "https://outlook.office365.com/owa/calendar/5a55001c8c8e4e3289503e89d90cd276@lpjw.fr/038ca2a4d7dd49468ce5603042a881516392841034771113203/calendar.ics";
+
+//$iCalType = 'Google';
 
 // Fonction iCalDecoder
-// Fonction iCalDecoder
+if ($iCalType === 'Outlook'){
 function iCalDecoder($file)
 {
     $ical = file_get_contents($file);
-
     // preg_match_all analyse $ical pour trouver l'expression qui correspond au pattern '/(BEGIN:VEVENT.*?END:VEVENT)/si'
     // on extrait ainsi les blocs d'événements entre BEGIN:VEVENT et END:VEVENT (balises de fichier iCal)
     preg_match_all('/(BEGIN:VEVENT.*?END:VEVENT)/si', $ical, $result, PREG_PATTERN_ORDER);
@@ -30,6 +39,84 @@ function iCalDecoder($file)
     $icalArray = array();
 
     foreach ($result[0] as $eventBlock) {
+
+        // on divise les lignes du bloc d'événement en utilisant le retour chariot comme délimiteur
+        $eventLines = explode("\r\n", $eventBlock);
+
+        $eventData = array();
+
+        foreach ($eventLines as $item) {
+
+            // on divise chaque ligne en deux parties (clé et valeur) en utilisant le caractère ":" comme délimiteur
+            $lineParts = explode(":", $item);
+
+            if (count($lineParts) > 1) {
+                $eventData[$lineParts[0]] = $lineParts[1];
+            }
+        }
+
+        // Vérifier si la clé "DTSTART" existe avant de l'ajouter au tableau des données d'événement
+        if (isset($eventData['DTSTART;TZID=Romance Standard Time'])) {
+            if (preg_match('/DESCRIPTION:(.*)END:VEVENT/si', $eventBlock, $regs)) {
+                $eventData['DESCRIPTION'] = str_replace("  ", " ", str_replace("\r\n", "", $regs[1]));
+            }
+
+            // condition pour ne pas afficher les événements passés
+            $eventStartDate = strtotime($eventData['DTSTART;TZID=Romance Standard Time']);
+            $now = time();
+            if ($eventStartDate > $now) {
+                $icalArray[] = $eventData;
+            }
+        }
+    }
+
+    // Trier les événements par date et heure de début
+     usort($icalArray, function ($a, $b) {
+        return strtotime($a['DTSTART;TZID=Romance Standard Time']) - strtotime($b['DTSTART;TZID=Romance Standard Time']);
+    });
+
+    // Limiter le nombre d'événements à 3
+    $icalArray = array_slice($icalArray, 0, 3);
+
+    return $icalArray;
+}
+
+// Fonction d'affichage des événements
+function displayEvents($events)
+{
+    $now = time(); // Timestamp actuel
+
+    // Tri des événements par date de début
+   usort($events, function ($a, $b) {
+       return strtotime($a['DTSTART;TZID=Romance Standard Time']) - strtotime($b['DTSTART;TZID=Romance Standard Time']);
+    });
+
+    foreach ($events as $event) {
+        $eventStartTimestamp = strtotime($event['DTSTART;TZID=Romance Standard Time']);
+        // Vérifier si l'événement est à venir
+        if ($eventStartTimestamp > $now) {
+            echo "
+                <tr>
+                    <td>" . $event['SUMMARY'] . "</td>
+                    <td >" . date('d/m/Y à H:i', $eventStartTimestamp) . "</td>
+                </tr>";
+        }
+    }
+}
+}
+else if ($iCalType === 'Google' ){
+// Fonction iCalDecoder
+function iCalDecoder($file)
+{
+    $ical = file_get_contents($file);
+    // preg_match_all analyse $ical pour trouver l'expression qui correspond au pattern '/(BEGIN:VEVENT.*?END:VEVENT)/si'
+    // on extrait ainsi les blocs d'événements entre BEGIN:VEVENT et END:VEVENT (balises de fichier iCal)
+    preg_match_all('/(BEGIN:VEVENT.*?END:VEVENT)/si', $ical, $result, PREG_PATTERN_ORDER);
+
+    $icalArray = array();
+
+    foreach ($result[0] as $eventBlock) {
+
         // on divise les lignes du bloc d'événement en utilisant le retour chariot comme délimiteur
         $eventLines = explode("\r\n", $eventBlock);
 
@@ -61,13 +148,13 @@ function iCalDecoder($file)
 
     // Trier les événements par date et heure de début
     usort($icalArray, function ($a, $b) {
-        return strtotime($a['DTSTART']) - strtotime($b['DTSTART']);
-    });
+      return strtotime($a['DTSTART']) - strtotime($b['DTSTART']);
+   });
 
     // Limiter le nombre d'événements à 3
     $icalArray = array_slice($icalArray, 0, 3);
 
-    return $icalArray;
+   return $icalArray;
 }
 
 // Fonction d'affichage des événements
@@ -76,13 +163,12 @@ function displayEvents($events)
     $now = time(); // Timestamp actuel
 
     // Tri des événements par date de début
-    usort($events, function ($a, $b) {
-        return strtotime($a['DTSTART']) - strtotime($b['DTSTART']);
-    });
+   usort($events, function ($a, $b) {
+     return strtotime($a['DTSTART']) - strtotime($b['DTSTART']);
+   });
 
     foreach ($events as $event) {
         $eventStartTimestamp = strtotime($event['DTSTART']);
-
         // Vérifier si l'événement est à venir
         if ($eventStartTimestamp > $now) {
             echo "
@@ -92,6 +178,7 @@ function displayEvents($events)
                 </tr>";
         }
     }
+}
 }
 ?>
 <!------------BODY------------>
@@ -120,16 +207,20 @@ function displayEvents($events)
                             $motif = $row1['motif'];
                             $dateDebut = date('d/m/Y', strtotime($row1['debut_absence']));
                             $dateFin = date('d/m/Y', strtotime($row1['fin_absence']));
-                            //$idLieu = $row1['idLieu'];
+                            // Conversion des dates de début et de fin en timestamp
+                            $dateFinTimestamp = strtotime($row1['fin_absence']);
+                            $dateActuelle = strtotime(date('Y-m-d')); // Date actuelle
 
-                            echo "<tr><td>" . $name . " " . $fname . "<td>" . $motif . "<td>" . $dateDebut . "<td>" . $dateFin . "</tr>";
+                            // Vérifie si la date de fin est postérieure à la date actuelle
+                            if ($dateFinTimestamp >= $dateActuelle) {
+                                echo "<tr><td>" . $name . " " . $fname . "<td>" . $motif . "<td>" . $dateDebut . "<td>" . $dateFin . "</tr>";
+                            }
                         }
                         ?>
                     </table>
 
                     <h2>Calendrier</h2>
                     <hr>
-
                     <table>
                         <tr>
                             <th>Événement à venir</th>
@@ -151,7 +242,7 @@ function displayEvents($events)
                     </table>
                 </div>
 
-                <div class="two">
+               <div class="two">
                     <h2>Météo de la Semaine</h2>
                     <hr>
 
@@ -166,4 +257,5 @@ function displayEvents($events)
 </body>
 
 <!------------FOOTER------------>
-<?php include "./modules/footer.php"; ?>
+<!---------------?php include "./modules/footer.php"; ?---------------->
+

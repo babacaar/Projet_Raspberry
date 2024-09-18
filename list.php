@@ -1,12 +1,23 @@
 <!------------HEADER------------>
 <?php
-session_start();
+require_once 'verif_session.php';
+require_once 'Fonctions/fonction.php';
+
+//var_dump($user_id);
+//var_dump($role_id);
+//if (!checkPermission($role_id, $page, $pdo)) {
+        // Redirection vers une page d'erreur d'autorisation
+  //  header("Location: 403error.php");
+    //exit(); // Arrêt de l'exécution du script pour éviter tout accès non autorisé
+//}
+
+
 $pageTitle = "Liste des Rasperrys Pi"; // Titre de la page
 $dropDownMenu = true;
 include "modules/header.php";
 ?>
-
 <!------------BODY------------>
+
 
 <body>
     <div class="list page">
@@ -43,7 +54,7 @@ include "modules/header.php";
 
             <?php
             require_once "controllers/controller_config_files.php";
-            
+
             $db = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
             // Récupérer tous les groupes depuis la table "groups"
             $query = "SELECT id, name FROM groupes";

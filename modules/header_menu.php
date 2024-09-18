@@ -12,13 +12,17 @@
                 title="Permet de configurer les hôtes et groupes d'hôtes">Hôtes/Groupes</a>
             <a tabindex="0" href='<?php echo $siteUrl . "/info.php" ?>'
                 title="Permet d'ajouter une information ponctuelle à afficher">Informations Ponctuelles</a>
-            <!-------a tabindex="0" href='<?php echo $siteUrl . "/upload_video.php" ?>'  title="Permet d'ajouter des vidéos"-----><!---/a--->
+            <a tabindex="0" href='<?php echo $siteUrl . "/vue_des_liens.php" ?>'
+                title="Permet de voir l'affichage de base ">Configuration de base</a>
             <a tabindex="0" href='<?php echo $siteUrl . "/custom_style.php" ?>'
                 title="Permet de modifier le style du site"><i class="fa-solid fa-paintbrush"></i> Style</a>
 	    <a tabindex="0" class="link-btn" href='<?php echo $siteUrl."/configMenu.php" ?>'
 		title="Permet de convertir les pages de menus en image JPG">
                     <i class="fa-solid fa-gear"></i> Configuration des Menus</a>
 
+	    <a tabindex="0" class="link-btn" href='<?php echo $siteUrl."/deconnectemoi.php" ?>'
+                title="Déconnexion">
+                    <i class="fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i> Se déconnecter</a>
         </div>
 
         <button id="dropdown-btn" tabindex="1">
