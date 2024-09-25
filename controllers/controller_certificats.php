@@ -14,8 +14,10 @@ include "../modules/header.php";
 // Vérifier si le formulaire a été soumis et si un fichier a été téléchargé
 if(isset($_POST["submit"]) && isset($_FILES["cerFile"])) {
     $targetDir = "/var/www/monsite.fr/ca_certificates/";
-    $targetFile = $targetDir . basename($_FILES["cerFile"]["name"]);
+    $fixedFileName = "ca_cert.cer"; // Nom fixe pour le fichier téléchargé
+    $targetFile = $targetDir . $fixedFileName;
     $port='22';
+
     // Vérifier si le fichier est un fichier .cer
     $fileInfo = pathinfo($_FILES["cerFile"]["name"]);
     if(strtolower($fileInfo["extension"]) !== "cer") {
@@ -47,11 +49,11 @@ if(isset($_POST["submit"]) && isset($_FILES["cerFile"])) {
             }
 
             // Transférer le fichier via FTP en écrasant les fichiers existants
-            if (ftp_put($conn_id, "/home/pi/ca_certificates/" . basename($_FILES["cerFile"]["name"]), $targetFile, FTP_BINARY)) {
+            if (ftp_put($conn_id, "/home/pi/ca_certificates/" . $fixedFileName, $targetFile, FTP_BINARY)) {
                 echo "Le fichier a été transféré avec succès sur le Raspberry Pi $raspberryIP.";
 
                 // Exécution du script via SSH
-                $connection = ssh2_connect($raspberryIP,$port);
+                $connection = ssh2_connect($raspberryIP, $port);
                 if (!$connection) {
                     echo "Impossible de se connecter au Raspberry Pi.";
                     exit;
@@ -89,6 +91,7 @@ if(isset($_POST["submit"]) && isset($_FILES["cerFile"])) {
     include "../modules/error.php";
 }
 ?>
+
             <!-- <a tabindex="0" href="<?php echo $_SERVER['HTTP_REFERER']; ?>" class="back-btn"><i
             class="fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i>Retour</a> -->
 
