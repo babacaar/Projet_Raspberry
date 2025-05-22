@@ -6,7 +6,7 @@ lancer_chromium() {
     xset s noblank
     xset s off
     unclutter -idle 1 -root &
- /usr/bin/chromium-browser --kiosk --noerrdialogs https://affichage.lpjw.local/display_absences.php https://affichage.lpjw.local/menu.jpg https://affichage.lpjw.local/menupeda.jpg &
+ /usr/bin/chromium-browser --kiosk --noerrdialogs https://srvprtg01.joseph.wresinski/public/mapshow.htm?id=5006&mapid=C17E0589-AAF7-470C-A36C-8A65A9D5C309 http://192.168.250.1/plugins/autologin/core/php/go.php?apikey%3DX9WFcmXDig1SmtbwMqgZe6YSM0YToQL1GESXS4ddsPnJPYdvMFXcjKjCwfzaLfaQ&id%3D72 http://192.168.250.1/index.php?v=d&p=plan&plan_id=4 &
 }
 
 fermer_onglets_chromium() {

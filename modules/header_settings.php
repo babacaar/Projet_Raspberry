@@ -8,6 +8,10 @@
 		title="Permet de convertir les pages de menus en image JPG">
                     <i class="fa-solid fa-calendar"></i> Agenda</a>
 
+            <a tabindex="0" class="link-btn" href='<?php echo $siteUrl."/agendaVS.php" ?>'
+                title="Permet de convertir les pages de menus en image JPG">
+                    <i class="fa-solid fa-calendar"></i> Événements Vie Scolaire</a>
+
             <a tabindex="0" class="link-btn" href='<?php echo $siteUrl."/certificates.php" ?>'
                 title="Permet de charger l'autorité de certification sur les hôtes">
                     <i class="fa-solid fa-certificate"></i> Certificats</a>
@@ -22,7 +26,7 @@
 
         <button id="dropdown-btn" tabindex="1">
             <i id="menu-icon-bars" class="fa-solid fa-gear"></i>
-            <i id="menu-icon-chevron" class="fa-solid fa-chevron-left"></i>
+            <i id="menu-icon-chevron" class="fa-solid fa-chevron-left" style="margin-left: 5px;"></i>
         </button>
     </div>
 </div>

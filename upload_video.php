@@ -97,7 +97,7 @@ include "modules/header.php";
                     </tbody>
                 </table>
                 <label for="videoFile">Sélectionner un fichier vidéo :</label>
-                <input type='file' name='video' id='videoFile' accept='video/*'>
+                <input type='file' name='video' id='videoFile' accept='video'>
 		<button type="submit" name="submit" id="upload" class="button">Upload</button>
             </form>
             <div class="pi-details-container" id="pi-details">

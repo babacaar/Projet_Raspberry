@@ -4,8 +4,8 @@ require_once "/var/www/monsite.fr/verif_session.php";
 
 $pageTitle = "Menu"; // Titre de la page
 $dropDownMenu = false;
-include "modules/header_settings.php";
 include "modules/header.php";
+include "modules/header_settings.php";
 ?>
 
 <!------------BODY------------>

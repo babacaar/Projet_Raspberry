@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <title>
         <?php echo $pageTitle; ?>
     </title>
     <link rel="stylesheet" type="text/css" href="../../style.css" />
-    <script src="https://kit.fontawesome.com/803d6eb873.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/10bb5e6754.js" crossorigin="anonymous"></script>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
@@ -21,6 +21,7 @@
 
     if ($dropDownMenu)
         include "header_menu.php";
+
     ?>
 </header>
 

@@ -7,20 +7,14 @@ include "./modules/header.php";
 
 <?php
 require_once "controllers/controller_config_files.php";
-$pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
-$stmt1 = $pdo->prepare("SELECT * FROM `absence` ORDER BY fin_absence DESC, nom ASC LIMIT 8");
-//$stmt1->bindValue(':id', $id);
-//$stmt1->bindParam(1, $id);
-$stmt1->execute();
-$res1 = $stmt1->fetchall();
+//$pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
 
+//$statement = $pdo->prepare("SELECT url, agendaType FROM `agendaVS` LIMIT 1");
+//$statement->execute();
+//$agendaFile = $statement->fetch(PDO::FETCH_ASSOC);
 
-$statement = $pdo->prepare("SELECT url, agendaType FROM `agenda`");
-$statement->execute();
-$agendaFile = $statement->fetch(PDO::FETCH_ASSOC);
-
-$iCalFile = $agendaFile['url'];
-$iCalType = $agendaFile['agendaType'];
+//$iCalFile = $agendaFile['url'];
+//$iCalType = $agendaFile['agendaType'];
 // Nom du fichier iCal à lire
 //$iCalFile = 'google.ics';
 //$iCalFile = "https://outlook.office365.com/owa/calendar/5a55001c8c8e4e3289503e89d90cd276@lpjw.fr/038ca2a4d7dd49468ce5603042a881516392841034771113203/calendar.ics";
@@ -61,6 +55,13 @@ function iCalDecoder($file)
                 $eventData['DESCRIPTION'] = str_replace("  ", " ", str_replace("\r\n", "", $regs[1]));
             }
 
+            // Extraction de la LOCATION si elle existe
+            if (isset($eventData['LOCATION'])) {
+                $eventData['LOCATION'] = $eventData['LOCATION'];
+            } else {
+                $eventData['LOCATION'] = 'Non spécifié';  // Valeur par défaut si LOCATION n'existe pas
+            }
+
             // condition pour ne pas afficher les événements passés
             $eventStartDate = strtotime($eventData['DTSTART;TZID=Romance Standard Time']);
             $now = time();
@@ -75,8 +76,8 @@ function iCalDecoder($file)
         return strtotime($a['DTSTART;TZID=Romance Standard Time']) - strtotime($b['DTSTART;TZID=Romance Standard Time']);
     });
 
-    // Limiter le nombre d'événements à 3
-    $icalArray = array_slice($icalArray, 0, 3);
+    // Limiter le nombre d'événements à 7
+    $icalArray = array_slice($icalArray, 0, 7);
 
     return $icalArray;
 }
@@ -99,6 +100,7 @@ function displayEvents($events)
                 <tr>
                     <td>" . $event['SUMMARY'] . "</td>
                     <td >" . date('d/m/Y à H:i', $eventStartTimestamp) . "</td>
+                    <td>" . $event['LOCATION'] . "</td>
                 </tr>";
         }
     }
@@ -135,6 +137,19 @@ function iCalDecoder($file)
         if (isset($eventData['DTSTART'])) {
             if (preg_match('/DESCRIPTION:(.*)END:VEVENT/si', $eventBlock, $regs)) {
                 $eventData['DESCRIPTION'] = str_replace("  ", " ", str_replace("\r\n", "", $regs[1]));
+            }
+
+            if (preg_match('/LOCATION:(.*)\r\n/si', $eventBlock, $locRegs)) {
+                // Nettoyer la chaîne et enlever les informations indésirables
+                $location = str_replace("  ", " ", str_replace("\r\n", "", $locRegs[1]));
+
+                // Supprimer les informations supplémentaires comme SEQUENCE, STATUS, etc.
+                $location = preg_replace('/(SEQUENCE|STATUS|SUMMARY|TRANSP|DESCRIPTION)[^\r\n]*/i', '', $location);
+
+                // Enlever les espaces superflus
+                $location = trim($location);
+
+                $eventData['LOCATION'] = $location;
             }
 
             // condition pour ne pas afficher les événements passés
@@ -174,57 +189,37 @@ function displayEvents($events)
             echo "
                 <tr>
                     <td>" . $event['SUMMARY'] . "</td>
-                    <td >" . date('d/m/Y à H:i', $eventStartTimestamp) . "</td>
+                    <td>" . date('d/m/Y à H:i', $eventStartTimestamp) . "</td>
+                    <td>" . $event['LOCATION'] . "</td>
                 </tr>";
         }
     }
 }
 }
+
+//try {
+  //  $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
+    //$stmt = $pdo->query("SELECT calendarTitle FROM agendaVS LIMIT 1");
+    //$calendarTitle = $stmt->fetchColumn();
+//} catch (PDOException $e) {
+  //  echo "Erreur : " . $e->getMessage();
+//}
 ?>
 <!------------BODY------------>
 
 <body>
-    <div class="absences page">
-        <section class="page-content-tomorrow">
-            <div class="grid-wrapper">
-                <div class="one">
-                    <h2>Absences du Personnel</h2>
-                    <hr>
-                    <table>
-                        <tr>
-                            <th>NOM Prénom</th>
-                            <th>Motif</th>
-                            <th>Date de Début</th>
-                            <th>Date de Fin</th>
-                        </tr>
-
-                        <?php
-                        date_default_timezone_set('Europe/Paris');
-
-                        foreach ($res1 as $row1) {
-                            $name = $row1['nom'];
-                            $fname = $row1['prenom'];
-                            $motif = $row1['motif'];
-                            $dateDebut = date('d/m/Y', strtotime($row1['debut_absence']));
-                            $dateFin = date('d/m/Y', strtotime($row1['fin_absence']));
-                            // Conversion des dates de début et de fin en timestamp
-                            $dateFinTimestamp = strtotime($row1['fin_absence']);
-                            $dateActuelle = strtotime(date('Y-m-d')); // Date actuelle
-
-                            // Vérifie si la date de fin est postérieure à la date actuelle
-                            if ($dateFinTimestamp >= $dateActuelle) {
-                                echo "<tr><td>" . $name . " " . $fname . "<td>" . $motif . "<td>" . $dateDebut . "<td>" . $dateFin . "</tr>";
-                            }
-                        }
-                        ?>
-                    </table>
-
-                    <h2>Calendrier</h2>
+    <div class="calendar page">
+      <div class="calendar-container">
+        <section class="page-content-calendar">
+           <!-- <div class="grid-wrapper"> -->
+           <!--     <div class="one"> -->
+                    <h2><?php echo htmlspecialchars($calendarTitle); ?></h2>
                     <hr>
                     <table>
                         <tr>
                             <th>Événement à venir</th>
                             <th>Date</th>
+                            <th>Lieu</th>
                         </tr>
 
                        <?php
@@ -236,23 +231,14 @@ function displayEvents($events)
                             displayEvents($events);
                         } else {
                             // Gérer le cas où $events n'est pas défini ou est vide
-                            echo "<tr><td colspan='2'>Aucun événement à afficher.</td></tr>";
+                            echo "<tr><td colspan='3'>Aucun événement à afficher.</td></tr>";
                         }
                         ?>
                     </table>
-                </div>
-
-               <div class="two">
-                    <h2>Météo de la Semaine</h2>
-                    <hr>
-
-                    <div id="ww_3c6e5842e3df1" v='1.3' loc='id' a='{"t":"responsive","lang":"fr","sl_lpl":1,"ids":["wl7516"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"#FFFFFF","cl_font":"#000000","cl_cloud":"#d4d4d4","cl_persp":"#2196F3","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722","cl_odd":"#0000000a"}'>
-                        Plus de prévisions: <a href="https://oneweather.org/fr/paris/20_jours/" id="ww_3c6e5842e3df1_u" target="_blank">Météo 20 jours</a>
-                    </div>
-                    <script async src="https://app2.weatherwidget.org/js/?id=ww_3c6e5842e3df1"></script>
-                </div>
-            </div>
+           <!--     </div> -->
+           <!--  </div> -->
         </section>
+      </div>
     </div>
 </body>
 

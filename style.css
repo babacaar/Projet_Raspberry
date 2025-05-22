@@ -142,7 +142,6 @@ a:visited {
 i {
   color: black;
 }
-
 .page {
   display: flex;
   flex-direction: column;
@@ -171,6 +170,23 @@ i {
   display: flex;
   flex-direction: column;
 }
+.page-content-calendar {
+  background-color: white;
+  margin-top: -83px;
+  margin-bottom: 24px;
+  margin-right: 20px;
+  margin-left: 20px;
+  padding: 50px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px 3px black;
+  display: flex;
+  flex-direction: column;
+  width:70%;
+  height:83%;
+ }
+
+
 .page-content-calendrier {
   background-color: white;
   margin: 30px 20px;
@@ -199,6 +215,223 @@ i {
   color: var(--secondary);
   font-weight: bold;
   margin-right: 20px;
+}
+
+.calendar-container {
+  display: flex;
+  justify-content: center;  /* Centre horizontalement */
+  align-items: center;      /* Centre verticalement */
+  width: 100%;
+  height: 83vh;            /* Prend toute la hauteur visible */
+}
+
+/* Conteneur principal */
+.gestion-calendrier .flex-container {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 20px;
+    flex-wrap: wrap; /* Permet de passer à la ligne sur les petits écrans */
+}
+
+/* Formulaire */
+.gestion-calendrier .form-container {
+    flex: 1;
+    max-width: 45%; /* Réduit la taille du formulaire */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px; /* Moins d'espace autour du formulaire */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.gestion-calendrier .form-container h2 {
+    color: #ff6600;
+    margin-bottom: 10px;
+}
+
+.gestion-calendrier .form-container label {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #555;
+    margin-right: 20px;
+}
+
+.gestion-calendrier .form-container input[type="text"] {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.gestion-calendrier .form-container input[type="radio"] {
+    vertical-align: middle; /* Aligne le bouton radio avec le texte */
+    margin-right: 10px; /* Un peu d'espace entre le bouton et le texte */
+}
+    
+
+}
+.gestion-calendrier .submit-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.gestion-calendrier .submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Séparateur vertical */
+.gestion-calendrier .separator {
+    width: 1px;
+    background-color: #ddd;
+    height: auto;
+    margin-top: 20px;
+}
+
+/* Liste des calendriers */
+.gestion-calendrier .list-container {
+    flex: 2;
+    max-width: 50%; /* Réduit la taille de la liste */
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Permet le défilement horizontal pour les grandes tables */
+}
+
+.gestion-calendrier .list-container h2 {
+    color: #ff6600;
+    margin-bottom: 10px;
+}
+
+/* Table des calendriers */
+.gestion-calendrier table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px; /* Réduit la taille de police pour optimiser l'espace */
+}
+
+.gestion-calendrier table th, 
+.gestion-calendrier table td {
+    border: 1px solid #ddd;
+    padding: 8px; /* Moins de padding pour les cellules */
+    text-align: left;
+}
+
+.gestion-calendrier table th {
+    background-color: #ff6600;
+    color: #fff;
+    font-weight: bold;
+}
+
+.gestion-calendrier table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.gestion-calendrier table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.gestion-calendrier table button {
+    font-weight: bold;
+    font-size: 16px;
+    background-color: white;
+    color: black;
+    box-shadow: 3px 3px 3px black;
+    border-radius: 3px;
+    padding: 10px;
+    height: fit-content;
+    width: fit-content;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.gestion-calendrier table button:hover {
+  background-color: var(--light-secondary);
+  color: black;
+
+}
+
+.gestion-calendrier table button.delete-btn {
+    background-color: #dc3545;
+}
+
+.gestion-calendrier table button.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Conteneur des boutons Modifer et Supprimer */
+.button-container {
+    display: flex; /* Utilise flexbox pour aligner les éléments en ligne */
+    gap: 10px; /* Ajoute un espace entre les deux boutons */
+}
+
+/* Styles supplémentaires pour les boutons */
+.button-container button {
+    padding: 5px 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.button-container i {
+    margin-right: 5px; /* Ajoute un peu d'espace entre l'icône et le texte */
+}
+
+
+/* Style pour l'icône du point d'interrogation */
+.info-icon {
+    display: inline-block;
+    background-color: var(--light-secondary);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    margin-left: 5px;
+    position: relative; /* Nécessaire pour la position de l'info-bulle */
+}
+
+/* Style pour la boîte de l'infobulle */
+.info-icon:hover::after {
+    content: attr(data-tooltip); /* Affiche le texte contenu dans l'attribut data-tooltip */
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: normal; /* Permet le retour à la ligne dans l'infobulle */
+    word-wrap: break-word; /* Permet de casser le texte sur plusieurs lignes si nécessaire */
+    top: 50%;  /* Positionne l'infobulle au-dessus de l'icône */
+    left: 105%;
+    transform: translateX(-50%);  /* Centre l'infobulle horizontalement */
+    z-index: 100;
+    max-width: 300px; /* Limite la largeur de l'infobulle */
+    width: auto; /* Laisse l'infobulle s'ajuster à la taille du contenu */
+    pointer-events: none; /* Permet de ne pas interférer avec d'autres éléments survolés */
+}
+
+/* Assurez-vous que le label a un positionnement relatif pour que l'info-bulle se positionne correctement */
+label {
+    position: relative;
+    display: inline-block;
 }
 
 /*---------------MESSAGES & TOOLTIPS---------------*/

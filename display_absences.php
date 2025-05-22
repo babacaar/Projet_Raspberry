@@ -75,8 +75,8 @@ function iCalDecoder($file)
         return strtotime($a['DTSTART;TZID=Romance Standard Time']) - strtotime($b['DTSTART;TZID=Romance Standard Time']);
     });
 
-    // Limiter le nombre d'événements à 3
-    $icalArray = array_slice($icalArray, 0, 3);
+    // Limiter le nombre d'événements à 7
+    $icalArray = array_slice($icalArray, 0, 7);
 
     return $icalArray;
 }
@@ -193,7 +193,7 @@ function displayEvents($events)
                     <table>
                         <tr>
                             <th>NOM Prénom</th>
-                            <th>Motif</th>
+                            <!-- <th>Motif</th> -->
                             <th>Date de Début</th>
                             <th>Date de Fin</th>
                         </tr>
@@ -204,7 +204,7 @@ function displayEvents($events)
                         foreach ($res1 as $row1) {
                             $name = $row1['nom'];
                             $fname = $row1['prenom'];
-                            $motif = $row1['motif'];
+                            //$motif = $row1['motif'];
                             $dateDebut = date('d/m/Y', strtotime($row1['debut_absence']));
                             $dateFin = date('d/m/Y', strtotime($row1['fin_absence']));
                             // Conversion des dates de début et de fin en timestamp
@@ -213,7 +213,7 @@ function displayEvents($events)
 
                             // Vérifie si la date de fin est postérieure à la date actuelle
                             if ($dateFinTimestamp >= $dateActuelle) {
-                                echo "<tr><td>" . $name . " " . $fname . "<td>" . $motif . "<td>" . $dateDebut . "<td>" . $dateFin . "</tr>";
+                                echo "<tr><td>" . $name . " " . $fname . "<td>" . $dateDebut . "<td>" . $dateFin . "</tr>";
                             }
                         }
                         ?>
