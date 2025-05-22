@@ -20,14 +20,6 @@ include "../modules/header.php";
 				// Vérifie qu'il provient d'un formulaire
 				if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-					// Database settings
-					/*$db="affichage";
-								   $dbhost="10.49.11.117";
-								   $dbport=3306;
-								   $dbuser="root";
-								   $dbpasswd="root";
-								   */
-
 					$Conf_sites = $_POST["Conf_sites0"];
 					date_default_timezone_set('Europe/Paris');
 					$Conf_date = date('y-m-d à H:i:s');

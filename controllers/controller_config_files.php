@@ -1,25 +1,23 @@
 <?php
-//ACCESS DATABASE BDDEA
-$db = "affichage";
-$dbhost = "172.17.5.202";
-$dbport = 3306;
-$dbuser = "root";
-$dbpasswd = "Koxo@361428";
+// Charger les variables depuis le fichier .env
+$envPath = __DIR__ . '/../.env';
+if (file_exists($envPath)) {
+    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0 || trim($line) === '') continue;
+        list($key, $value) = explode('=', $line, 2);
+        putenv(trim($key) . '=' . trim($value));
+    }
+}
 
-/*/Acces RASP Kioskbsif	
-	   //SSH
-	   $ssh_kioskbsif_server= "192.168.250.24";
-	   $ssh_kioskbsif_username = "pi";
-	   $ssh_kioskbsif_password = "22351414";
-	   $ssh_kioskbsif_port = "22";
 
-	   //FTP
-	   $ftp_kioskbsif_server = "192.168.250.24";
-	   $ftp_kioskbsif_username = "pi";
-	   $ftp_kioskbsif_password = "22351414";
 
-*/
-// NAME servira de nom au fichier texte crée
+$db = getenv('DB_NAME');
+$dbhost = getenv('DB_HOST');
+$dbuser = getenv('DB_USER');
+$dbpasswd = getenv('DB_PASS');
+$dbport = getenv('DB_PORT');
+
 $names = "Myfiles";
 $nom ="MyfilesInfo";
 

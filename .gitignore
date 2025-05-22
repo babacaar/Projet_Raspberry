@@ -1,6 +1,9 @@
 images/
 ca_certificates/
+raspberry_upload/
 Videos/
 *.bak
 *.log
 *.env
+*.sh
+*.jpg
