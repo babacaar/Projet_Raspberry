@@ -1,6 +1,6 @@
 images/
 ca_certificates/
-Video/
+Videos/
 *.bak
 *.log
 *.env
