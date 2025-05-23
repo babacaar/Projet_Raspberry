@@ -90,7 +90,11 @@ EOF
 mysql -u "$DB_USER" -p"$DB_PASS" -h "$DB_HOST" -P "$DB_PORT" "$DB_NAME" < "$DB_DUMP" 2>mysql_err.txt
 
 if [ $? -ne 0 ]; then
-    dialog --title "Erreur MySQL" --textbox mysql_err.txt 15 60
+    if [ -s mysql_err.txt ]; then
+        dialog --title "Erreur MySQL" --textbox mysql_err.txt 15 60
+    else
+        dialog --title "Erreur MySQL" --msgbox "Une erreur inconnue est survenue pendant l'import." 8 60
+    fi
     rm -f db_name.txt db_user.txt db_pass.txt db_host.txt db_port.txt mysql_err.txt
     exit 1
 fi
