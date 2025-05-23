@@ -75,7 +75,7 @@ dialog --infobox "Mise à jour du système..." 5 40
 sudo apt update -y && sudo apt upgrade -y
 
 dialog --infobox "Installation des paquets requis (Apache, PHP, extensions, mpv, etc.)..." 5 60
-sudo apt install -y apache2 php php-pdo php-ssh2 php-mbstring php-mysql unzip mpv xdotool unclutter wmctrl
+sudo apt install -y mariadb-server apache2 php php-pdo php-ssh2 php-mbstring php-mysql unzip mpv xdotool unclutter wmctrl
 
 # === Création du fichier .env ===
 cat <<EOF > "$ENV_FILE"
