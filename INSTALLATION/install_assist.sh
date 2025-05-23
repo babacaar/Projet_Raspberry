@@ -43,6 +43,14 @@ fi
 # === Nettoyage fichier temporaire ===
 rm -f project_dir.txt
 
+# === Mise à jour et installation des paquets ===
+dialog --infobox "Mise à jour du système..." 5 40
+sudo apt update -y && sudo apt upgrade -y
+
+dialog --infobox "Installation des paquets requis (Apache, PHP, extensions, mpv, etc.)..." 5 60
+sudo apt install -y mariadb-server apache2 php php-pdo php-ssh2 php-mbstring php-mysql unzip mpv xdotool unclutter wmctrl
+
+
 # === Variables pour la suite ===
 DB_DUMP="$PROJECT_DIR/db.sql"
 ENV_FILE="$PROJECT_DIR/.env"
@@ -70,12 +78,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# === Mise à jour et installation des paquets ===
-dialog --infobox "Mise à jour du système..." 5 40
-sudo apt update -y && sudo apt upgrade -y
 
-dialog --infobox "Installation des paquets requis (Apache, PHP, extensions, mpv, etc.)..." 5 60
-sudo apt install -y mariadb-server apache2 php php-pdo php-ssh2 php-mbstring php-mysql unzip mpv xdotool unclutter wmctrl
 
 # === Création du fichier .env ===
 cat <<EOF > "$ENV_FILE"
@@ -84,6 +87,15 @@ DBPORT=$DB_PORT
 DBNAME=$DB_NAME
 DBUSER=$DB_USER
 DBPASS=$DB_PASS
+EOF
+
+# Créer base + utilisateur MySQL si besoin
+mysql -u root <<EOF
+CREATE DATABASE IF NOT EXISTS $DB_NAME;
+Use $DB_NAME;
+CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';
+GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';
+FLUSH PRIVILEGES;
 EOF
 
 # === Import de la base de données ===
@@ -101,6 +113,32 @@ fi
 
 # === Attribution des droits ===
 sudo chown -R $APACHE_USER:$APACHE_USER "$PROJECT_DIR"
+
+# === Virtual Host ===
+VHOST_FILE="/etc/apache2/sites-available/monsite.fr.conf"
+
+sudo bash -c "cat > $VHOST_FILE" <<EOF
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    ServerName monsite.fr
+    DocumentRoot $PROJECT_DIR
+
+    <Directory $PROJECT_DIR>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog \${APACHE_LOG_DIR}/monsite_error.log
+    CustomLog \${APACHE_LOG_DIR}/monsite_access.log combined
+</VirtualHost>
+EOF
+
+sudo a2dissite 000-default.conf
+
+sudo a2ensite monsite.fr.conf
+sudo a2enmod rewrite
+sudo systemctl reload apache2
 
 # === Fin de l'installation ===
 dialog --title "Installation terminée" --msgbox "✅ Le projet a été installé avec succès !\n\nTu peux maintenant accéder à l’interface via http://<adresse-ip-de-ton-pi>" 10 60
