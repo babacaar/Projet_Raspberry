@@ -1,91 +1,99 @@
+🖥️ Affichage Dynamique pour Raspberry Pi
+Ce projet PHP permet de gérer l’affichage de contenus (liens web) sur des Raspberry Pi à distance, avec la possibilité d’intercaler des vidéos.
+Le tout est automatisé grâce à un script généré dynamiquement, envoyé par SSH/FTP.
 
-1. Contexte et objectifs 
+_________________________________________________________________________
 
-1.1 Contexte 
+📁 Structure du projet
 
-Le lycée LPJW souhaite moderniser son système de communication interne et d'affichage d'informations. L'objectif est de diffuser des informations de manière dynamique et centralisée sur des écrans répartis dans l'enceinte du lycée. 
+mon-projet/
+├── controllers/           # Fichiers de logique (controller_config.php, controller_config_files.php)
+├── modules/               # Contient header.php, footer.php, success.php, error.php
+├── images/                # Contient logo_transparent.jpg (Le logo à personnaliser) 
+├── Videos/                # Dossier prévu pour les vidéos (lecture via mpv)
+├── db.sql                 # Dump SQL (structure uniquement)
+├── .env                   # Variables d’environnement (non versionné)
+├── menu.php               # Page d’accueil ou point d’entrée
+├── envoi.php              # Configuration et gestion des exécutions via SSH 
+└── .gitignore             # Fichiers/dossiers à ne pas suivre dans Git
+_________________________________________________________________________
 
-Centraliser et diffuser les informations importantes de manière claire et efficace. 
 
-Améliorer la communication interne entre les différents acteurs du lycée. 
+⚙️ Configuration requise
 
-Faciliter la gestion des absences. 
+- PHP 8.2
 
-Moderniser l'image du lycée et son attractivité. 
+- Serveur web (Apache, Nginx)
+
+- MySQL/MariaDB
+
+- Modules PHP : PDO, ssh2, ftp, mbstring
+
+- Un environnement Linux (pour exécution des scripts .sh sur Raspberry Pi)
+_________________________________________________________________________
+
+🛠️ Installation manuelle
+
+1. Clone du dépôt
+
+	git clone https://github.com/babacaar/Projet_Raspberry.git
+	cd Projet_Raspberry/
+
+2. Configurer l'environnement
+Crée un fichier .env à la racine :
+
+	DBHOST=votre ip
+	DBPORT=3306
+	DBNAME=nom_de_ta_bdd (affichage)
+	DBUSER=ton_utilisateur
+	DBPASS=ton_mot_de_passe
+
+3. Importer la base de données
+
+	mysql -u utilisateur -p base_de_donnees < db.sql
+
+4. Droits
+Assure-toi que le serveur web a le droit d’écriture.
+
+___________________________________________________________________________________
 
 
-# 
 
-1.2 Objectifs 
+🛠️ Installation classique avec script
 
-Le présent projet vise à développer une application web pour le lycée, accessible depuis un Raspberry Pi, permettant de gérer divers aspects de la vie scolaire : 
+	Exécuter le script install.sh présent dans INSTALLATION/
 
-Gestion des absences des professeurs et du personnel. 
+________________________________________________________________________
 
-Configuration des groupes d'écrans et des contenus à afficher. 
 
-Diffusion d'informations ponctuelles et d'alertes. 
 
-Personnalisation du style de l'interface pour chaque utilisateur. 
+🛠️ Installation assistée
 
-Gestion des menus et conversion en images pour affichage 
+	Exécuter le script d'installation assistée install_assist.sh (avant de l'exécuter assurez vous d'installer dialog avec "sudo apt install dialog" )
 
-# 
+_________________________________________________________________________
 
-2. Fonctionnalités principales 
+🚀 Utilisation
 
-L'application web propose les fonctionnalités suivantes : 
+1. Accède à l’interface web.
 
-Affichage Actuel : Configuration des URL des contenus à afficher sur les écrans connectés. 
+2. Ajoute les liens à afficher.
 
-Gestion des Absences : Saisie et consultation des absences des enseignants et du personnel. 
+3. Crée un groupe et associe des Raspberry Pi (IP, user, password).
 
-Gestion des Affichages : Création et suppression de groupes d'écrans, envoi de liens et de commandes, affichage d'alertes. 
+4. Lance l’envoi des scripts.
 
-Configuration des Hôtes/Groupes : Ajout, suppression et modification des Raspberry Pi et des groupes d'écrans. 
+5. Les Raspberry Pi exécutent automatiquement Chromium ou mpv.
 
-Informations Ponctuelles : Ajout d'informations temporaires à afficher sur les écrans. 
+_________________________________________________________________________
 
-Personnalisation de l'interface : Les utilisateurs pourront personnaliser leur profil et l'affichage des informations en fonction de leurs besoins. 
+🔐 Sécurité
 
-Configuration des Menus : Conversion des pages de menus en images pour une meilleure lisibilité sur les écrans. 
+Les mots de passe Raspberry sont stockés pour les connexions FTP/SSH. Pour un usage en production, prévois un chiffrement ou une solution plus sécurisée.
 
-# 
+.env est ignoré par Git pour éviter les fuites de données sensibles.
 
-3. Architecture technique et choix technologiques 
-
-3.1 Architecture du site 
-
-Le projet est basé sur une architecture LAMP : 
-
-Linux : Système d'exploitation stable et sécurisé, largement utilisé pour les serveurs web. 
-
-Apache : Serveur web performant et largement utilisé. 
-
-MySQL : Base de données relationnelle robuste et fiable pour stocker les données du site. 
-
-PHP : Langage de programmation backend pour le développement d'applications web dynamiques. 
-
-# 
-
-3.2 Choix technologiques 
-
-Langages de programmation : 
-
-PHP : Pour le développement backend de l'application web dynamique. Il offre une grande flexibilité et s'intègre facilement avec la base de données MySQL. 
-
-HTML/CSS : Langages fondamentaux pour la structuration et la mise en forme des pages web interactives et attrayantes. 
-
-JavaScript : Permet d'ajouter des fonctionnalités interactives et dynamiques au site web, comme des animations, des formulaires de validation et des interactions utilisateur. 
-
-#
-
-Outils et protocoles : 
-
-FTP/SSH : Protocoles sécurisés pour le transfert de fichiers et la gestion du serveur. 
-
-Mode kiosque : Permet de transformer le Raspberry Pi en un terminal d'affichage dédié, idéal pour diffuser des informations sur les écrans du lycée. 
-
- 
-
- 
+_____________________________________________________________________________________________________________________________ 
+     ✍️ Auteur Développé avec ❤️ par babacaar 
+	📧 Contact : techinfo@lpjw.fr 
+	🔗 GitHub : github.com/babacaar
