@@ -93,6 +93,7 @@ Les mots de passe Raspberry sont stockés pour les connexions FTP/SSH. Pour un u
 Le fichier `.env` est ignoré par Git pour éviter les fuites de données sensibles.
 
 _____________________________________________________________________________________________________________________________  
-✍️ Auteur Développé avec ❤️ par babacaar  
+✍️ Auteur 
+Développé avec ❤️ par babacaar  
 📧 Contact : techinfo@lpjw.fr  
 🔗 GitHub : github.com/babacaar
