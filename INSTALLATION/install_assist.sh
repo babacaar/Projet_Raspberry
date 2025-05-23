@@ -32,7 +32,7 @@ fi
 
 dialog --infobox "Clonage du dépôt Git dans $PROJECT_DIR ..." 5 60
 sudo apt install -y git
-git clone "$REPO_URL" "$PROJECT_DIR"
+git clone --branch master "$REPO_URL" "$PROJECT_DIR"
 
 if [ $? -ne 0 ]; then
     dialog --msgbox "Erreur lors du clonage du dépôt Git." 6 50
