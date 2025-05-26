@@ -71,6 +71,17 @@ DB_HOST=$(<db_host.txt)
 dialog --inputbox "Port MySQL [3306] :" 8 60 "3306" 2>db_port.txt
 DB_PORT=$(<db_port.txt)
 
+
+# === Infos admin ===
+dialog --inputbox "Nom d'utilisateur admin du projet :" 8 60 "admin" 2>admin_user.txt
+ADMIN_USER=$(<admin_user.txt)
+
+dialog --insecure --passwordbox "Mot de passe admin :" 8 60 2>admin_pass.txt
+ADMIN_PASS=$(<admin_pass.txt)
+
+dialog --inputbox "Entrez Email valide :" 8 60 "admin@example.com" 2>admin_email.txt
+ADMIN_EMAIL=$(<admin_email.txt)
+
 # === Résumé et confirmation ===
 dialog --yesno "Confirmer ces informations :\n\nDB_NAME: $DB_NAME\nDB_USER: $DB_USER\nDB_HOST: $DB_HOST\nDB_PORT: $DB_PORT" 12 60
 if [ $? -ne 0 ]; then
@@ -82,11 +93,11 @@ fi
 
 # === Création du fichier .env ===
 cat <<EOF > "$ENV_FILE"
-DBHOST=$DB_HOST
-DBPORT=$DB_PORT
-DBNAME=$DB_NAME
-DBUSER=$DB_USER
-DBPASS=$DB_PASS
+DB_HOST=$DB_HOST
+DB_PORT=$DB_PORT
+DB_NAME=$DB_NAME
+DB_USER=$DB_USER
+DB_PASS=$DB_PASS
 EOF
 
 # Créer base + utilisateur MySQL si besoin
@@ -110,6 +121,48 @@ if [ $? -ne 0 ]; then
     rm -f db_name.txt db_user.txt db_pass.txt db_host.txt db_port.txt mysql_err.txt
     exit 1
 fi
+
+
+# === Création de l'utilisateur admin + rôle + permissions ===
+HASHED_PASS=$(php -r "echo password_hash('$ADMIN_PASS', PASSWORD_DEFAULT);")
+
+mysql -u "$DB_USER" -p"$DB_PASS" "$DB_NAME" <<EOF
+INSERT INTO Utilisateurs (nom_utilisateur, mot_de_passe, email) VALUES ('$ADMIN_USER', '$HASHED_PASS', '$ADMIN_EMAIL');
+SET @uid = LAST_INSERT_ID();
+
+-- Rôle administrateur
+SET @admin_role_id = (SELECT id FROM Roles WHERE nom_role = 'administrateur' LIMIT 1);
+INSERT INTO Utilisateurs_Roles (id_utilisateur, id_role) VALUES (@uid, @admin_role_id);
+
+-- Permissions 1, 2, 3
+INSERT IGNORE INTO Roles_Permissions (id_role, id_permission) VALUES
+(@admin_role_id, 1),
+(@admin_role_id, 2),
+(@admin_role_id, 3);
+EOF
+
+
+# === Écriture du fichier .htaccess pour redirection ===
+HTACCESS_FILE="$PROJECT_DIR/.htaccess"
+cat <<EOF > "$HTACCESS_FILE"
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redirection vers connexion.php si on accède à la racine
+    RewriteCond %{REQUEST_URI} ^/?$
+    RewriteRule ^$ connexion.php [L,R=302]
+
+    # BEGIN WordPress
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteBase /
+    RewriteRule ^index\.php$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.php [L]
+    # END WordPress
+</IfModule>
+EOF
+
 
 # === Attribution des droits ===
 sudo chown -R $APACHE_USER:$APACHE_USER "$PROJECT_DIR"
