@@ -51,6 +51,19 @@ dialog --infobox "Installation des paquets requis (Apache, PHP, extensions, mpv,
 sudo apt install -y mariadb-server apache2 php php-pdo php-ssh2 php-mbstring php-mysql unzip mpv xdotool unclutter wmctrl
 
 
+# Modifier le bind-address pour écouter sur toutes les interfaces
+CONF_FILE="/etc/mysql/mariadb.conf.d/50-server.cnf"
+
+if grep -q "^bind-address" "$CONF_FILE"; then
+    sudo sed -i "s/^bind-address.*/bind-address = 0.0.0.0/" "$CONF_FILE"
+else
+    echo "bind-address = 0.0.0.0" | sudo tee -a "$CONF_FILE" > /dev/null
+fi
+
+# Redémarrer MariaDB pour appliquer la modification
+sudo systemctl restart mariadb
+
+
 # === Variables pour la suite ===
 DB_DUMP="$PROJECT_DIR/db.sql"
 ENV_FILE="$PROJECT_DIR/.env"
@@ -65,7 +78,7 @@ DB_USER=$(<db_user.txt)
 dialog --insecure --passwordbox "Mot de passe MySQL :" 8 60 2>db_pass.txt
 DB_PASS=$(<db_pass.txt)
 
-dialog --inputbox "Hôte MySQL [localhost] :" 8 60 "localhost" 2>db_host.txt
+dialog --inputbox "Hôte MySQL [localhost ou votre ip] :" 8 60 2>db_host.txt
 DB_HOST=$(<db_host.txt)
 
 dialog --inputbox "Port MySQL [3306] :" 8 60 "3306" 2>db_port.txt
@@ -76,7 +89,7 @@ DB_PORT=$(<db_port.txt)
 dialog --inputbox "Nom d'utilisateur admin du projet :" 8 60 "admin" 2>admin_user.txt
 ADMIN_USER=$(<admin_user.txt)
 
-dialog --insecure --passwordbox "Mot de passe admin :" 8 60 2>admin_pass.txt
+dialog --insecure --passwordbox "Mot de passe admin (IL FAUDRA S'EN RAPPELER POUR L'INTERFACE WEB):" 8 60 2>admin_pass.txt
 ADMIN_PASS=$(<admin_pass.txt)
 
 dialog --inputbox "Entrez Email valide :" 8 60 "admin@example.com" 2>admin_email.txt
@@ -104,8 +117,8 @@ EOF
 mysql -u root <<EOF
 CREATE DATABASE IF NOT EXISTS $DB_NAME;
 Use $DB_NAME;
-CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';
-GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';
+CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';
+GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 
