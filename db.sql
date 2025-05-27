@@ -141,6 +141,12 @@ CREATE TABLE `Permissions` (
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+INSERT INTO `Permissions` (`id`, `page`, `description`) VALUES
+(1, 'list.php', NULL),
+(2, 'configMenu.php', NULL),
+(3, 'groupe.php', NULL);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,6 +197,10 @@ CREATE TABLE `Roles` (
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `Roles` (`id`, `nom_role`, `description`) VALUES
+(1, 'administrateur', 'Administrateur du site');
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -208,6 +218,13 @@ CREATE TABLE `Roles_Permissions` (
   CONSTRAINT `Roles_Permissions_ibfk_1` FOREIGN KEY (`id_role`) REFERENCES `Roles` (`id`),
   CONSTRAINT `Roles_Permissions_ibfk_2` FOREIGN KEY (`id_permission`) REFERENCES `Permissions` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+INSERT INTO `Roles_Permissions` (`id_role`, `id_permission`) VALUES
+(1, 1),
+(1, 2),
+(1, 3);
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

@@ -133,12 +133,6 @@ SET @uid = LAST_INSERT_ID();
 -- Rôle administrateur
 SET @admin_role_id = (SELECT id FROM Roles WHERE nom_role = 'administrateur' LIMIT 1);
 INSERT INTO Utilisateurs_Roles (id_utilisateur, id_role) VALUES (@uid, @admin_role_id);
-
--- Permissions 1, 2, 3
-INSERT IGNORE INTO Roles_Permissions (id_role, id_permission) VALUES
-(@admin_role_id, 1),
-(@admin_role_id, 2),
-(@admin_role_id, 3);
 EOF
 
 
