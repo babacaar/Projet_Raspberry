@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# === Variables par dÃ©faut ===
+DEFAULT_PROJECT_DIR="/var/www/monsite.fr"
+REPO_URL="https://github.com/babacaar/Projet_Raspberry.git"
+INSTALL_DIR="$DEFAULT_PROJECT_DIR/INSTALLATION"
+APACHE_USER="www-data"
 
 # === Fenêtre de bienvenue ===
 dialog --title "Installation SERVEUR" --msgbox "Bienvenue dans l'assistant d'installation SERVEUR.\n\nAppuie sur OK pour commencer." 10 60
@@ -85,7 +90,7 @@ FLUSH PRIVILEGES;
 EOF
 
 # === Import de la base de données ===
-mysql -u "$DB_USER" -p"$DB_PASS" -h "$DB_HOST" -P "$DB_PORT" "$DB_NAME" < "$DB_DUMP" 2>mysql_err.txt
+mysql -u "$DB_USER" -p"$DB_PASS" -h "$DB_HOST" "$DB_NAME" < "$DB_DUMP" 2>mysql_err.txt
 
 if [ $? -ne 0 ]; then
     if [ -s mysql_err.txt ]; then
