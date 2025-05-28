@@ -1,47 +1,9 @@
 #!/bin/bash
 
-# === Variables par défaut ===
-DEFAULT_PROJECT_DIR="/var/www/monsite.fr"
-REPO_URL="https://github.com/babacaar/Projet_Raspberry.git"
-APACHE_USER="www-data"
-
-# === Vérifie que dialog est installé ===
-if ! command -v dialog &> /dev/null; then
-    echo "dialog n'est pas installé. Veuillez l’installer avec : sudo apt install dialog"
-    exit 1
-fi
 
 # === Fenêtre de bienvenue ===
-dialog --title "Installation Affichage Dynamique" --msgbox "Bienvenue dans l'assistant d'installation du projet pour Raspberry Pi.\n\nAppuie sur OK pour commencer." 10 60
+dialog --title "Installation SERVEUR" --msgbox "Bienvenue dans l'assistant d'installation SERVEUR.\n\nAppuie sur OK pour commencer." 10 60
 
-# === Choix du dossier d'installation ===
-dialog --inputbox "Choisis le dossier d'installation du projet :" 8 60 "$DEFAULT_PROJECT_DIR" 2>project_dir.txt
-PROJECT_DIR=$(<project_dir.txt)
-
-# === Clone ou mise à jour du dépôt ===
-if [ -d "$PROJECT_DIR" ] && [ "$(ls -A $PROJECT_DIR)" ]; then
-    dialog --yesno "Le dossier $PROJECT_DIR existe et n'est pas vide.\nVeux-tu supprimer son contenu et re-cloner le dépôt ?" 10 60
-    if [ $? -eq 0 ]; then
-        sudo rm -rf "$PROJECT_DIR"/*
-    else
-        dialog --msgbox "Installation annulée car dossier non vide." 6 50
-        rm -f project_dir.txt
-        exit 1
-    fi
-fi
-
-dialog --infobox "Clonage du dépôt Git dans $PROJECT_DIR ..." 5 60
-sudo apt install -y git
-git clone --branch master "$REPO_URL" "$PROJECT_DIR"
-
-if [ $? -ne 0 ]; then
-    dialog --msgbox "Erreur lors du clonage du dépôt Git." 6 50
-    rm -f project_dir.txt
-    exit 1
-fi
-
-# === Nettoyage fichier temporaire ===
-rm -f project_dir.txt
 
 # === Mise à jour et installation des paquets ===
 dialog --infobox "Mise à jour du système..." 5 40
