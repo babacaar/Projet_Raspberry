@@ -4,6 +4,7 @@
 <head>
     <title>
         <?php echo $pageTitle; ?>
+         require_once "/var/www/monsite.fr/controllers/controller_config_files.php";
     </title>
     <link rel="stylesheet" type="text/css" href="../../style.css" />
     <script src="https://kit.fontawesome.com/10bb5e6754.js" crossorigin="anonymous"></script>
@@ -12,12 +13,12 @@
 </head>
 
 <header>
-<a  href='https://affichage.lpjw.local/menu.php'>
+<a  href='<?php echo $siteUrl; ?>/menu.php'>
     <img id="logo-img" class="logo-img" src="../images/logo_transparent.png">
 </a>
 
     <?php
-    $siteUrl = "https://affichage.lpjw.local";
+    $siteUrl = "http://$dbhost";
 
     if ($dropDownMenu)
         include "header_menu.php";

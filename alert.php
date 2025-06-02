@@ -30,7 +30,7 @@ try {
     // Boucle sur chaque groupe sélectionné
     foreach ($selectedGroups as $groupId) {
         // Récupérez les adresses IP, username et password des Raspberry Pi pour ce groupe depuis la base de données
-        $query = "SELECT ip, username, password FROM pis WHERE group_id = :group_id";
+        $query = "SELECT p.ip, p.username, p.password FROM pis p JOIN pis_groups pg ON p.id = pg.pi_id WHERE pg.group_id = :group_id";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(":group_id", $groupId, PDO::PARAM_INT);
 

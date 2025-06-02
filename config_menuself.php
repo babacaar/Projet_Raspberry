@@ -35,6 +35,10 @@ include "modules/header.php";
     </div>
 
     <script>
+            <?php
+                require_once "controllers/controller_config_files.php"; // pour $dbhost
+            ?>
+            const dbhost = <?php echo json_encode($dbhost); ?>;
 	    document.addEventListener("DOMContentLoaded", function () {
             var form = document.getElementById('file-upload-form');
             var loadingSpinner = document.getElementById('loading-spinner');
@@ -62,7 +66,7 @@ include "modules/header.php";
 
 			// Ajouter du texte distinct en dessous du message de succès
                 	var additionalText = document.createElement('p');
-                	additionalText.textContent = 'Lien pour afficher le menu: https://affichage.lpjw.local/menu.jpg';
+                	additionalText.textContent = 'Lien pour afficher le menu: http://' + dbhost + '/menu.jpg';
 			additionalText.style.color = '#ff721f';
                 	message.parentNode.appendChild(additionalText);
 
