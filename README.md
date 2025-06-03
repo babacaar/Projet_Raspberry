@@ -69,10 +69,11 @@ _________________________________________________________________________
 
 🛠️ Installation assistée
 
-Exécuter le script d'installation assistée `install_assist.sh` (avant de l'exécuter assurez-vous d'installer `dialog` avec :  
+Exécuter le script d'installation assistée `choix_d_installation.sh` (avant de l'exécuter assurez-vous d'installer `dialog` avec :  
 ```bash
 sudo apt install dialog
 ```
+une boite de dialogue vous proposera 3 options Mode Client, Mode Serveur ou Serveur + Client ; Y'a plus qu'à suivre la démarche
 
 _________________________________________________________________________
 
