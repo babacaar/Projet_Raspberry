@@ -6,6 +6,6 @@ session_start();
 session_destroy();
 
 // Redirige l'utilisateur vers la page de connexion
-header("Location: testlogin.php");
+header("Location: connexion.php");
 exit;
 ?>
