@@ -68,6 +68,7 @@ dialog --title "Choix de l'installation" --menu "Que souhaitez-vous installer ?"
 CHOICE=$(< /tmp/install_choice)
 clear
 
+INSTALL_DIR="$PROJECT_DIR/INSTALLATION"
 # === Fonction pour exécuter un script s'il existe ===
 run_script() {
     SCRIPT_PATH="$1"
