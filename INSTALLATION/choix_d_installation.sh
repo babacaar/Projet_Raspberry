@@ -3,7 +3,7 @@
 # === Variables par défaut ===
 DEFAULT_PROJECT_DIR="/var/www/monsite.fr"
 REPO_URL="https://github.com/babacaar/Projet_Raspberry.git"
-INSTALL_DIR="$DEFAULT_PROJECT_DIR/INSTALLATION"
+INSTALL_DIR="$PROJECT_DIR/INSTALLATION"
 APACHE_USER="www-data"
 
 # === Exécution en root obligatoire ===
