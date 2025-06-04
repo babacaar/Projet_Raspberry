@@ -87,10 +87,10 @@ case $CHOICE in
         run_script "$INSTALL_DIR/client.sh"
         ;;
     2)
-        run_script "$INSTALL_DIR/install_srv_assist.sh"
+        run_script "$INSTALL_DIR/install_srv_assist.sh" "$PROJECT_DIR"
         ;;
     3)
-        run_script "$INSTALL_DIR/install_srv_assist.sh"
+        run_script "$INSTALL_DIR/install_srv_assist.sh" "$PROJECT_DIR"
         run_script "$INSTALL_DIR/client.sh"
         ;;
     4|*)

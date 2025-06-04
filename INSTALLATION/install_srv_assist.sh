@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # === Variables par dÃ©faut ===
-PROJECT_DIR="/var/www/monsite.fr"
+PROJECT_DIR="$1"
 REPO_URL="https://github.com/babacaar/Projet_Raspberry.git"
 INSTALL_DIR="$PROJECT_DIR/INSTALLATION"
 APACHE_USER="www-data"
@@ -142,12 +142,16 @@ EOF
 sudo chown -R $APACHE_USER:$APACHE_USER "$PROJECT_DIR"
 
 # === Virtual Host ===
-VHOST_FILE="/etc/apache2/sites-available/monsite.fr.conf"
+# === Extraire ou demander le nom de domaine ===
+DEFAULT_DOMAIN=$(basename "$PROJECT_DIR")
+dialog --inputbox "Nom de domaine du site (ex: monsite.fr) :" 8 60 "$DEFAULT_DOMAIN.local" 2>domain.txt
+DOMAIN_NAME=$(<domain.txt)
+VHOST_FILE="/etc/apache2/sites-available/${DOMAIN_NAME}.conf"
 
 sudo bash -c "cat > $VHOST_FILE" <<EOF
 <VirtualHost *:80>
     ServerAdmin webmaster@localhost
-    ServerName monsite.fr
+    ServerName $DOMAIN_NAME
     DocumentRoot $PROJECT_DIR
 
     <Directory $PROJECT_DIR>
@@ -156,14 +160,14 @@ sudo bash -c "cat > $VHOST_FILE" <<EOF
         Require all granted
     </Directory>
 
-    ErrorLog \${APACHE_LOG_DIR}/monsite_error.log
-    CustomLog \${APACHE_LOG_DIR}/monsite_access.log combined
+    ErrorLog \${APACHE_LOG_DIR}/${DOMAIN_NAME}_error.log
+    CustomLog \${APACHE_LOG_DIR}/${DOMAIN_NAME}_access.log combined
 </VirtualHost>
 EOF
 
 sudo a2dissite 000-default.conf
 
-sudo a2ensite monsite.fr.conf
+sudo a2ensite "${DOMAIN_NAME}.conf"
 sudo a2enmod rewrite
 sudo systemctl reload apache2
 
@@ -171,5 +175,5 @@ sudo systemctl reload apache2
 dialog --title "Installation terminée" --msgbox "✅ Le projet a été installé avec succès !\n\nTu peux maintenant accéder à l’interface via http://<adresse-ip-de-ton-pi>" 10 60
 
 # === Nettoyage fichiers temporaires ===
-rm -f db_name.txt db_user.txt db_pass.txt db_host.txt db_port.txt mysql_err.txt
+rm -f db_name.txt db_user.txt db_pass.txt db_host.txt db_port.txt mysql_err.txt domain.txt
 clear
