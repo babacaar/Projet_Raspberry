@@ -1,5 +1,5 @@
 images/
-ca_certificates/
+ca_certificates/*
 raspberry_upload/*
 Videos/
 *.bak

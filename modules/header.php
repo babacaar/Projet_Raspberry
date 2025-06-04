@@ -10,14 +10,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
-<?php require_once "/var/www/monsite.fr/controllers/controller_config_files.php"; ?>
+<?php require_once __DIR__ . "/../controllers/controller_config_files.php"; 
+$siteUrl = "http://$dbhost";
+?>
 <header>
 <a  href='<?php echo $siteUrl; ?>/menu.php'>
     <img id="logo-img" class="logo-img" src="../images/logo_transparent.png">
 </a>
 
     <?php
-    $siteUrl = "http://$dbhost";
+    
 
     if ($dropDownMenu)
         include "header_menu.php";

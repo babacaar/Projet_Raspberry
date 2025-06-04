@@ -3,7 +3,7 @@
 //session_start();
 
 // Inclusion du fichier de configuration de la base de données
-require_once "/var/www/monsite.fr/controllers/controller_config_files.php";
+require_once __DIR__ . "/../controllers/controller_config_files.php";
 
 // Connexion à la base de données
 try {

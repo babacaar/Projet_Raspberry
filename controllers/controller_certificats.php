@@ -11,9 +11,10 @@ include "../modules/header.php";
     <div class="page">
         <section class="page-content">
 <?php
+require_once "./controller_config_files.php";
 // Vérifier si le formulaire a été soumis et si un fichier a été téléchargé
 if(isset($_POST["submit"]) && isset($_FILES["cerFile"])) {
-    $targetDir = "/var/www/monsite.fr/ca_certificates/";
+    $targetDir = "$Url/ca_certificates/";
     $fixedFileName = "ca_cert.cer"; // Nom fixe pour le fichier téléchargé
     $targetFile = $targetDir . $fixedFileName;
     $port='22';

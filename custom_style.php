@@ -1,6 +1,6 @@
 <!------------HEADER------------>
 <?php
-require_once "/var/www/monsite.fr/verif_session.php";
+require_once "verif_session.php";
 $pageTitle = "Style Personnalisé"; // Titre de la page
 $dropDownMenu = true;
 include "modules/header.php";

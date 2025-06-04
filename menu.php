@@ -1,6 +1,6 @@
 <!------------HEADER------------>
 <?php
-require_once "/var/www/monsite.fr/verif_session.php";
+require_once "verif_session.php";
 
 $pageTitle = "Menu"; // Titre de la page
 $dropDownMenu = false;

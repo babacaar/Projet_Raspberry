@@ -29,8 +29,9 @@ include "modules/header.php";
     </script>
 
         <?php
+        require_once "controllers/controller_config_files.php";
         // Définir le répertoire de destination
-        $destination_dir = "/var/www/monsite.fr/";
+        $destination_dir = "$Url";
 
         // Vérifier si le fichier a été téléchargé
         if (isset($_FILES['pdf_file']) && $_FILES['pdf_file']['error'] === UPLOAD_ERR_OK) {

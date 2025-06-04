@@ -2,7 +2,7 @@
 // Démarrage de la session
 session_start();
 
-require_once "/var/www/monsite.fr/controllers/controller_config_files.php";
+require_once "controllers/controller_config_files.php";
 // Connexion à la base de données
 try {
     $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db, $dbuser, $dbpasswd);

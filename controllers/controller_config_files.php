@@ -17,13 +17,13 @@ $dbhost = getenv('DB_HOST');
 $dbuser = getenv('DB_USER');
 $dbpasswd = getenv('DB_PASS');
 $dbport = getenv('DB_PORT');
-
+$Url = getenv('SITE_URL');
 $names = "Myfiles";
 $nom ="MyfilesInfo";
 
 //EMPLACEMENT DU FICHIER DANS LE RASP
 
-$dir = "/var/www/monsite.fr/scripts/Affichage_";
+$dir = "$Url/scripts/Affichage_";
 
 
 //CREATION DU FICHIER DANS LE RASP

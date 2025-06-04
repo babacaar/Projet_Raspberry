@@ -6,7 +6,7 @@ require_once "controllers/controller_config_files.php";
 
 // Vérifier si le formulaire a été soumis et si un fichier a été téléchargé
 if(isset($_POST["submit"]) && isset($_FILES["video"])) {
-    $targetDir = "/var/www/monsite.fr/Videos/";
+    $targetDir = "$Url/Videos/";
     $targetFile = $targetDir . "video.mp4"; // Renommer le fichier téléchargé en "video.mp4"
 
     // Vérifier si le fichier vidéo est une vidéo réelle ou une fausse vidéo
@@ -30,7 +30,7 @@ if(isset($_POST["submit"]) && isset($_FILES["video"])) {
                 try {
                     $pdo = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db, $dbuser, $dbpasswd);
                     // Récupérer les adresses IP, nom d'utilisateur et mot de passe des Raspberry Pi pour ce groupe depuis la base de données
-                    $query = "SELECT ip, username, password FROM pis WHERE group_id = :group_id";
+                    $query = "SELECT pis.ip, pis.username, pis.password FROM pis INNER JOIN pis_groups ON pis.id = pis_groups.pi_id WHERE pis_groups.group_id = :group_id";
                     $stmt = $pdo->prepare($query);
                     $stmt->bindParam(":group_id", $groupId, PDO::PARAM_INT);
 

@@ -11,8 +11,9 @@ include "modules/header.php";
   <div class="gestion page">
     <section class="page-content">
         <?php
+        require_once "./controller_config_files.php";
         // Définir le répertoire de destination
-        $destination_dir = "/var/www/monsite.fr/";
+        $destination_dir = "$Url";
 
         // Vérifier si le fichier a été téléchargé
         if (isset($_FILES['pdf_file']) && $_FILES['pdf_file']['error'] === UPLOAD_ERR_OK) {

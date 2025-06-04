@@ -67,6 +67,7 @@ DB_PORT=$DB_PORT
 DB_NAME=$DB_NAME
 DB_USER=$DB_USER
 DB_PASS=$DB_PASS
+SITE_URL=$PROJECT_DIR
 EOF
 
 # === Option de suppression base/utilisateur ===

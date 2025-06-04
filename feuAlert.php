@@ -12,7 +12,8 @@ include "modules/header.php";
         <section class="page-content">
             <h1>L'alerte est lancée, mettez-vous en sécurité à présent.</h1>
             <hr>
-            <a tabindex="0" href='<?php echo $siteUrl . "/groupe.php" ?>' class="back-btn"><i
+            <a tabindex="0" href='<?php  require_once "controllers/controller_config_files.php"; 
+                                          echo $Url . "/groupe.php" ?>' class="back-btn"><i
                     class="fa-solid fa-arrow-right-from-bracket fa-rotate-180"></i>Retour</a>
 
 		<?php
@@ -32,7 +33,7 @@ try {
     // Boucle sur chaque groupe sélectionné
     foreach ($selectedGroups as $groupId) {
         // Récupérez les adresses IP, username et password des Raspberry Pi pour ce groupe depuis la base de données
-        $query = "SELECT ip, username, password FROM pis WHERE group_id = :group_id";
+        $query = "SELECT pis.ip, pis.username, pis.password FROM pis INNER JOIN pis_groups ON pis.id = pis_groups.pi_id WHERE pis_groups.group_id = :group_id";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(":group_id", $groupId, PDO::PARAM_INT);
 

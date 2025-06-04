@@ -1,6 +1,6 @@
 <!------------HEADER------------>
 <?php
-require_once "/var/www/monsite.fr/verif_session.php";
+require_once "verif_session.php";
 $pageTitle = "Gestion des Groupes"; // Titre de la page
 $dropDownMenu = true;
 include "modules/header.php";
@@ -34,7 +34,7 @@ include "modules/header.php";
                     $conn = new PDO('mysql:host=' . $dbhost . ';port=' . $dbport . ';dbname=' . $db . '', $dbuser, $dbpasswd);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                    $stmt = $conn->query('SELECT * FROM pis');
+                    $stmt = $conn->query("SELECT pis.ip, pis.name, pg.group_id FROM pis LEFT JOIN pis_groups pg ON pis.id = pg.pi_id");
                     $rows = $stmt->fetchAll();
 
                     if (count($rows) > 0) {
