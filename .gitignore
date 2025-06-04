@@ -7,6 +7,6 @@ Videos/
 *.env
 *.sh
 *.jpg
-.htaccess
+*.htaccess
 !INSTALLATION/*.sh
 
