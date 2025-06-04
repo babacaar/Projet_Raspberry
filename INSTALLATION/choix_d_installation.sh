@@ -72,9 +72,10 @@ INSTALL_DIR="$PROJECT_DIR/INSTALLATION"
 # === Fonction pour exécuter un script s'il existe ===
 run_script() {
     SCRIPT_PATH="$1"
+    shift
     if [ -f "$SCRIPT_PATH" ]; then
         chmod +x "$SCRIPT_PATH"
-        "$SCRIPT_PATH"
+        "$SCRIPT_PATH" "$@"
     else
         dialog --title "Erreur" --msgbox "❌ Le script $SCRIPT_PATH est introuvable !" 8 50
         exit 1
