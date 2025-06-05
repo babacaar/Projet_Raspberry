@@ -127,6 +127,10 @@ EOF
 sudo reboot
 EOF
 
+# Demander à l'utilisateur le nom d'hôte ou IP du serveur (DBHOST)
+dialog --inputbox "Entrez l'adresse IP ou le nom d'hôte du serveur (DBHOST) :" 8 60 "exemple : 192.168.1.100" 2>/tmp/dbhost
+DBHOST=$(cat /tmp/dbhost)
+
 cat <<EOF | tee /home/pi/alert_feu.sh > /dev/null
 #!/bin/bash
 
@@ -144,7 +148,7 @@ xset s noblank\n
 xset s off\n
 xset -dpms\n
 unclutter -idle 1 -root &\n
-/usr/bin/chromium-browser --kiosk --noerrdialogs http://ip/bar_info.php
+/usr/bin/chromium-browser --kiosk --noerrdialogs http://$DBHOST/bar_info.php
 EOF
 
 
@@ -167,7 +171,7 @@ xset s noblank\n
 xset s off\n
 xset -dpms\n
 unclutter -idle 1 -root &\n
-/usr/bin/chromium-browser --kiosk --noerrdialogs http://ip/bar_ppms.php
+/usr/bin/chromium-browser --kiosk --noerrdialogs http://$DBHOST/bar_ppms.php
 EOF
 
 
@@ -201,7 +205,7 @@ lancer_chromium() {
     xset s off
     xset -dpms
     unclutter -idle 1 -root &
- /usr/bin/chromium-browser --kiosk --noerrdialogs https://affichage.lpjw.local/display_absences.php https://affichage.lpj.local/menu.jpg
+ /usr/bin/chromium-browser --kiosk --noerrdialogs https://threatmap.checkpoint.com/
 }
 
 fermer_onglets_chromium() {
@@ -333,6 +337,9 @@ EOF
             ;;
     esac
 done
+
+rm -f /tmp/dbhost
+
 
 dialog --title "Installation terminée" --msgbox "L'installation assistée est terminée.\nRedémarrez si nécessaire." 10 50
 clear

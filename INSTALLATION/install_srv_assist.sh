@@ -40,20 +40,20 @@ DB_USER=$(<db_user.txt)
 dialog --insecure --passwordbox "Mot de passe MySQL :" 8 60 2>db_pass.txt
 DB_PASS=$(<db_pass.txt)
 
-dialog --inputbox "Hôte MySQL [localhost ou IP] :" 8 60 "localhost" 2>db_host.txt
+dialog --inputbox "Hôte MySQL [127.0.0.1 ou IP du serveur] :" 8 60 "127.0.0.1" 2>db_host.txt
 DB_HOST=$(<db_host.txt)
 
 dialog --inputbox "Port MySQL [3306] :" 8 60 "3306" 2>db_port.txt
 DB_PORT=$(<db_port.txt)
 
 # === Admin ===
-dialog --inputbox "Nom d'utilisateur admin :" 8 60 "admin" 2>admin_user.txt
+dialog --inputbox "Nom d'utilisateur du compte d'administrateur du site :" 8 60 "admin" 2>admin_user.txt
 ADMIN_USER=$(<admin_user.txt)
 
-dialog --insecure --passwordbox "Mot de passe admin :" 8 60 2>admin_pass.txt
+dialog --insecure --passwordbox "Mot de passe du compte d'administrateur du site :" 8 60 2>admin_pass.txt
 ADMIN_PASS=$(<admin_pass.txt)
 
-dialog --inputbox "Email de l’admin :" 8 60 "admin@example.com" 2>admin_email.txt
+dialog --inputbox "Email du compte d'administrateur du site :" 8 60 "admin@example.com" 2>admin_email.txt
 ADMIN_EMAIL=$(<admin_email.txt)
 
 # === Confirmation ===
